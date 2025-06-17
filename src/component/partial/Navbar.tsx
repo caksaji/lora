@@ -19,7 +19,7 @@ export default function Navbar() {
     }
   }
   return (
-    <div className="h-12">
+    <div className="h-16">
       <div className="fixed top-0 left-0 w-dvw">
         <div className="container">
           <div className="flex gap-4 font-semibold">
