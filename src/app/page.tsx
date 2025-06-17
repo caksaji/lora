@@ -1,5 +1,7 @@
 'use client'
 
+import IconSvg from '@/component/partial/IconSvg'
+
 import {
   ResponsiveContainer,
   BarChart,
@@ -37,7 +39,7 @@ export default function Report() {
   }
   return (
     <div className="grid grid-cols-1 gap-4 md:grid-cols-5">
-      <div className="col-span-1 md:col-span-2">
+      <div className="col-span-full md:col-span-2">
         <div className="grid grid-cols-1 gap-4 h-full sm:grid-cols-2">
           {[...Array(4)].map((_, i) => (
             <div key={i} className="col-span-1 flex items-center gap-4 p-4 rounded-xl bg-gray-100 md:flex-col md:items-start md:justify-between">
@@ -56,8 +58,8 @@ export default function Report() {
           ))}
         </div>
       </div>
-      <div className="col-span-1 md:col-span-3">
-        <div className="flex flex-col space-y-4 w-full p-4 rounded-xl bg-gray-100">
+      <div className="col-span-full md:col-span-3">
+        <div className="w-full p-4 rounded-xl space-y-4 bg-gray-100">
           <div className="text-lg font-semibold">
             Top Selling Products
           </div>
@@ -72,8 +74,8 @@ export default function Report() {
           </ResponsiveContainer>
         </div>
       </div>
-      <div className="col-span-full">
-        <div className="flex flex-col space-y-4 w-full p-4 rounded-xl bg-gray-100">
+      <div className="col-span-full md:col-span-3">
+        <div className="w-full p-4 rounded-xl space-y-4 bg-gray-100">
           <div className="text-lg font-semibold">
             Sales Value History
           </div>
@@ -86,6 +88,20 @@ export default function Report() {
               <Line type="monotone" dataKey="value" stroke="#8e51ff" />
             </LineChart>
           </ResponsiveContainer>
+        </div>
+      </div>
+      <div className="col-span-full md:col-span-2">
+        <div className="w-full p-4 rounded-xl space-y-4 bg-gray-100" style={{height: 'calc(300px + ((1rem * 2) + (2rem + 1rem)))'}}>
+          <div className="text-lg font-semibold">
+            Recent Sales
+          </div>
+          <div className="overflow-y-auto" style={{height: 'calc(100% - ((1rem * 2) + (2rem + 1rem)))'}}>
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris nec metus sit amet magna aliquam ullamcorper ac vel magna. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum sagittis ultricies neque vitae porttitor. Mauris egestas dictum ipsum, sit amet accumsan quam suscipit in. Phasellus est nulla, faucibus a maximus id, tempus a ipsum. Nulla vitae sem sit amet urna gravida condimentum. Donec dictum ac est sit amet accumsan. Proin at lectus in arcu iaculis varius non et lorem. Praesent aliquet sed eros a molestie. Proin sed velit massa. Sed tristique placerat ornare. Aliquam ultrices lacus quis viverra lobortis. Lorem ipsum.
+          </div>
+          <div tabIndex="0" className="flex items-center gap-2 w-fit mx-auto link">
+            <span>View all</span>
+            <span className="h-5 w-5"><IconSvg name="arrow-right" /></span>
+          </div>
         </div>
       </div>
     </div>
