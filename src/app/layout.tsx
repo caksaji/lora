@@ -2,6 +2,7 @@ import type { Metadata } from 'next'
 import { Poppins } from 'next/font/google'
 import '@/app/style/global.sass'
 import Navbar from '@/component/partial/Navbar'
+import Footer from '@/component/partial/Footer'
 
 const fontSans = Poppins({
   subsets: ['latin'],
@@ -14,7 +15,7 @@ const menu = [
 
 export const metadata: Metadata = {
   title: 'Lora',
-  description: 'Product purchase analyzer, built with next.js by https://linkedin.com/in/caksaji. This project is my personal training to use next.js',
+  description: 'Product purchase analyzer, built with next.js by https://caksaji.netlify.app. This project is my personal training to use next.js',
 }
 
 export default function RootLayout({
@@ -29,6 +30,7 @@ export default function RootLayout({
         <div className="container">
           {children}
         </div>
+        <Footer />
       </body>
     </html>
   )
