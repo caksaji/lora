@@ -20,7 +20,7 @@ export default function Navbar() {
   }
   return (
     <div className="h-16">
-      <div className="fixed top-0 left-0 w-dvw">
+      <div className="fixed top-0 left-0 w-dvw bg-gray-200">
         <div className="container">
           <div className="flex gap-4 font-semibold">
             {menu.map((m, i) => (
