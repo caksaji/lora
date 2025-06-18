@@ -1,5 +1,6 @@
 'use client'
 
+import { dateShownFormat, timeShownFormat, formatCurrency } from '@/lib/localUtil'
 import Skeleton from '@/component/partial/Skeleton'
 import Table from '@/component/partial/Table'
 import IconSvg from '@/component/partial/IconSvg'
@@ -37,10 +38,8 @@ export default function Report() {
       { name: '2025-03-19', value: 1890 },
       { name: '2025-03-20', value: 2780 },
       { name: '2025-03-21', value: 1890 }
-    ]
-  }
-  const recentSale = {
-    data: [
+    ],
+    history: [
       { date: '2025-03-15T03:24:00', value: 99807000 },
       { date: '2025-03-15T03:24:00', value: 99807000 },
       { date: '2025-03-15T03:24:00', value: 99807000 },
@@ -63,7 +62,7 @@ export default function Report() {
                   {i === 0 ? 'Total revenue' : i === 1 ? 'Total sales' : i === 2 ? 'Highest sales' : 'Lowest sales'}
                 </div>
                 <div className="text-lg font-semibold">
-                  {i === 0 ? highlightData.revenue : i === 1 ? highlightData.sale : i === 2 ? highlightData.hiSale : highlightData.loSale}
+                  {i === 0 ? highlightData?.revenue : i === 1 ? highlightData?.sale : i === 2 ? highlightData?.hiSale : highlightData?.loSale}
                 </div>
               </div>
             </div>
@@ -76,7 +75,7 @@ export default function Report() {
             Top Selling Products
           </div>
           <ResponsiveContainer height={300}>
-            <BarChart data={highlightData.productChart}>
+            <BarChart data={highlightData?.productChart}>
               <XAxis dataKey="name" />
               <YAxis />
               <Tooltip />
@@ -86,13 +85,13 @@ export default function Report() {
           </ResponsiveContainer>
         </div>
       </div>
-      <div className="col-span-full md:col-span-3">
+      <div className="col-span-full">
         <div className="w-full p-4 rounded-xl space-y-4 bg-gray-100">
           <div className="text-lg font-semibold">
             Sales Value History
           </div>
           <ResponsiveContainer height={300}>
-            <LineChart data={highlightData.saleChart}>
+            <LineChart data={highlightData?.saleChart}>
               <XAxis dataKey="name" />
               <YAxis />
               <Tooltip />
@@ -102,45 +101,39 @@ export default function Report() {
           </ResponsiveContainer>
         </div>
       </div>
-      <div className="col-span-full md:col-span-2">
-        <div className="w-full p-4 rounded-xl space-y-4 bg-gray-100" style={{height: 'calc(300px + ((1rem * 2) + (2rem + 1rem)))'}}>
+      <div className="col-span-full">
+        <div className="w-full p-4 rounded-xl space-y-4 bg-gray-100">
           <div className="text-lg font-semibold">
-            Recent Sales
+            Transaction History
           </div>
-          <div className="overflow-y-auto" style={{height: 'calc(100% - ((1rem * 2) + (2rem + 1rem)))'}}>
-            <Table
-              showSkeleton={showSkeletonTable}
-              emptyData={recentSale.data?.length > 0 ? false : true}
-              emptyDataText="Oops, no products sold"
-              minShowTableAt="xs"
-              thead={
-                <>
-                  <span className="tcell w-full shrink">At</span>
-                  <span className="tcell w-28 text-center">Value</span>
-                </>
-              }
-              tbody={recentSale.data?.map((d, i) => (
-                <div key={i} className="tbody">
-                  <span className="tcell w-full shrink">{d.date}</span>
-                  <span className="tcell w-28 text-right">{d.value}</span>
-                  {/*<div className="tcell w-28">
-                    <div className="flex w-full space-x-2">
-                      <SpInputRadio v-model="atmosphere.status" type="toggle" :disabled="loadingToggle" :loading="loadingToggle" @change="changeStatus(atmosphere.id)" />
-                      <SpButton color="blue" size="sm" icon-only @click="openModalEdit(atmosphere)">
-                        <template #icon>
-                          <IconSvg name="edit-pencil" className="h-5 w-5" />
-                        </template>
-                      </SpButton>
-                    </div>
-                  </div>*/}
-                </div>
-              ))}
-            />
-          </div>
-          <div tabIndex={0} className="flex items-center gap-2 w-fit mx-auto link">
-            <span>View all</span>
-            <IconSvg name="arrow-right" className="h-5 w-5" />
-          </div>
+          <Table
+            showSkeleton={showSkeletonTable}
+            emptyData={highlightData?.history?.length > 0 ? false : true}
+            emptyDataText="Oops, no products sold"
+            minShowTableAt="xs"
+            thead={
+              <>
+                <span className="tcell w-full shrink">At</span>
+                <span className="tcell w-32 text-center">Value</span>
+              </>
+            }
+            tbody={highlightData?.history?.map((d, i) => (
+              <div key={i} className="tbody">
+                <span className="tcell w-full shrink">{dateShownFormat(d.date, 'medium')}, {timeShownFormat(d.date)}</span>
+                <span className="tcell w-32 text-right">{formatCurrency(d.value)}</span>
+                {/*<div className="tcell w-28">
+                  <div className="flex w-full space-x-2">
+                    <SpInputRadio v-model="atmosphere.status" type="toggle" :disabled="loadingToggle" :loading="loadingToggle" @change="changeStatus(atmosphere.id)" />
+                    <SpButton color="blue" size="sm" icon-only @click="openModalEdit(atmosphere)">
+                      <template #icon>
+                        <IconSvg name="edit-pencil" className="h-5 w-5" />
+                      </template>
+                    </SpButton>
+                  </div>
+                </div>*/}
+              </div>
+            ))}
+          />
         </div>
       </div>
     </div>
