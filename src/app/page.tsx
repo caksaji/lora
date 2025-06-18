@@ -1,6 +1,7 @@
 'use client'
 
 import dynamic from 'next/dynamic'
+import { useTheme } from 'next-themes'
 import { useBreakpoint } from '@/hook/useBreakpoint'
 import { dateShownFormat, timeShownFormat, formatNum, formatCurrency } from '@/lib/localUtil'
 import Skeleton from '@/component/partial/Skeleton'
@@ -21,6 +22,7 @@ import {
 const Chart = dynamic(() => import('react-apexcharts'), { ssr: false })
 
 export default function Report() {
+  const { theme } = useTheme()
   const bp = useBreakpoint()
   const highlightData = {
     revenue: 11111,
@@ -78,7 +80,8 @@ export default function Report() {
       chart: {
         fontFamily: 'Poppins, sans-serif',
         redrawOnParentResize: true,
-        toolbar: { show: false }
+        toolbar: { show: false },
+        background: 'transparent'
       },
       yaxis: {
         labels: {
@@ -93,14 +96,16 @@ export default function Report() {
         formatter: function(val) {
           return formatNum(val)
         }
-      }
+      },
+      theme: { mode: theme }
     },
     sale: {
       chart: {
         fontFamily: 'Poppins, sans-serif',
         redrawOnParentResize: true,
         toolbar: { show: false },
-        zoom: { enabled: false }
+        zoom: { enabled: false },
+        background: 'transparent'
       },
       yaxis: {
         labels: {
@@ -114,7 +119,8 @@ export default function Report() {
       stroke: {
         curve: 'smooth',
         lineCap: 'round'
-      }
+      },
+      theme: { mode: theme }
     }
   }
   return (
@@ -122,8 +128,8 @@ export default function Report() {
       <div className="col-span-full md:col-span-2">
         <div className="grid grid-cols-1 gap-4 h-full sm:grid-cols-2">
           {[...Array(4)].map((_, i) => (
-            <div key={i} className="col-span-1 flex items-center gap-4 p-4 rounded-xl bg-gray-100 md:flex-col md:items-start md:justify-between">
-              <div className="flex items-center justify-center h-16 w-16 rounded-full text-4xl bg-gray-200">
+            <div key={i} className="col-span-1 flex items-center gap-4 p-4 rounded-xl bg-gray-100 md:flex-col md:items-start md:justify-between dark:bg-gray-800">
+              <div className="flex items-center justify-center h-16 w-16 rounded-full text-4xl bg-gray-200 dark:bg-gray-700">
                 <span>{i === 0 ? '💰' : i === 1 ? '🛒' : i === 2 ? '👍' : '👎'}</span>
               </div>
               <div>
@@ -139,7 +145,7 @@ export default function Report() {
         </div>
       </div>
       <div className="col-span-full md:col-span-3">
-        <div className="w-full p-4 rounded-xl space-y-4 bg-gray-100">
+        <div className="w-full p-4 rounded-xl space-y-4 bg-gray-100 dark:bg-gray-800">
           <div className="text-lg font-semibold">
             Top Selling Products
           </div>
@@ -147,7 +153,7 @@ export default function Report() {
         </div>
       </div>
       <div className="col-span-full">
-        <div className="w-full p-4 rounded-xl space-y-4 bg-gray-100">
+        <div className="w-full p-4 rounded-xl space-y-4 bg-gray-100 dark:bg-gray-800">
           <div className="text-lg font-semibold">
             Sales Value History
           </div>
@@ -164,7 +170,7 @@ export default function Report() {
         </div>
       </div>
       <div className="col-span-full">
-        <div className="w-full p-4 rounded-xl space-y-4 bg-gray-100">
+        <div className="w-full p-4 rounded-xl space-y-4 bg-gray-100 dark:bg-gray-800">
           <div className="text-lg font-semibold">
             Transaction History
           </div>

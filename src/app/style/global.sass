@@ -4,9 +4,10 @@
 @use "./component/table"
 @utility container
   @apply px-2 mx-auto
+@custom-variant dark (&:where([data-theme=dark], [data-theme=dark] *))
 
 body
-  @apply bg-gray-200 text-gray-800
+  @apply bg-gray-200 text-gray-800 dark:bg-gray-900 dark:text-gray-200
   font-family: "Poppins", sans-serif
   font-size: 14px
   line-height: 1.5

@@ -1,4 +1,5 @@
 import type { Metadata } from 'next'
+import { ThemeProvider } from 'next-themes'
 import { Poppins } from 'next/font/google'
 import '@/app/style/global.sass'
 import Navbar from '@/component/partial/Navbar'
@@ -24,13 +25,15 @@ export default function RootLayout({
   children: React.ReactNode
 }>) {
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning>
       <body className="min-h-dvh">
-        <Navbar />
-        <div className="container">
-          {children}
-        </div>
-        <Footer />
+        <ThemeProvider>
+          <Navbar />
+          <div className="container">
+            {children}
+          </div>
+          <Footer />
+        </ThemeProvider>
       </body>
     </html>
   )

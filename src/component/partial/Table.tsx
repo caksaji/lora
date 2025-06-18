@@ -1,6 +1,7 @@
 'use client'
 
 import { useBreakpoint } from '@/hook/useBreakpoint'
+import { keydownEnter } from '@/lib/localUtil'
 import Skeleton from '@/component/partial/Skeleton'
 import ErrorData404 from '@/component/partial/ErrorData404'
 import IconSvg from '@/component/partial/IconSvg'
@@ -53,11 +54,6 @@ export default function Table({
       onChangePage?.(meta.current_page + 1)
     }
   }
-  const keydownEnter =
-    (fn: () => void) =>
-    (e: React.KeyboardEvent) => {
-      if (e.key === 'Enter') fn()
-    }
 
   return (
     <div>
@@ -68,8 +64,8 @@ export default function Table({
       }
       {(minShowTableAt !== 'never' && bp.greaterOrEqual(minShowTableAt)) &&
         <div className="sp-table">
-          <div className="divide-y divide-gray-200 dark:divide-gray-700">
-            <div className="flex w-full rounded-md bg-gray-100 text-gray-400 font-semibold dark:bg-gray-800">
+          <div className="divide-y divide-gray-200 dark:divide-gray-800">
+            <div className="flex w-full rounded-md bg-gray-100 text-gray-400 font-semibold dark:bg-gray-700">
               {thead}
             </div>
             {(!emptyData && !showSkeleton) && tbody}
@@ -85,7 +81,7 @@ export default function Table({
                   <div className="grid grid-cols-12 gap-4">
                     {[...Array(3)].map((_, i) => (
                       <div key={i} className="col-span-12 sm:col-span-6 xl:col-span-4">
-                        <div className="p-4 border border-gray-400 dark:border-gray-600 rounded-md">
+                        <div className="p-4 border border-gray-400 dark:border-gray-700 rounded-md">
                           <div className="flex w-full space-x-4">
                             <Skeleton className="flex-shrink-0 h-16 w-16 rounded-md" />
                             <div className="w-full space-y-4">
@@ -117,23 +113,23 @@ export default function Table({
       }
       {(!emptyData && meta?.from && meta?.to && meta?.total && meta?.current_page && meta?.last_page && meta?.last_page > 1) &&
         <div className="items-start justify-between w-full sm:flex">
-          <div className="flex items-start justify-center divide-x divide-gray-200 dark:divide-gray-600">
+          <div className="flex items-start justify-center divide-x divide-gray-200 dark:divide-gray-700">
             <div className="content-center h-12 px-4">
               {/*<SpNumberFormat :value="10" /> baris per halaman*/}
             </div>
-            <div className="content-center h-12 px-4 border-gray-200 dark:border-gray-600">
+            <div className="content-center h-12 px-4 border-gray-200 dark:border-gray-700">
               {/*Baris <SpNumberFormat :value="meta.from" /> - <SpNumberFormat :value="meta.to" /> dari <SpNumberFormat :value="meta.total" /> baris*/}
             </div>
           </div>
-          <div className="flex items-start justify-center divide-gray-200 dark:divide-gray-600 sm:divide-x">
+          <div className="flex items-start justify-center divide-gray-200 dark:divide-gray-700 sm:divide-x">
             <div
               tabIndex={!showSkeleton ? 0 : -1}
               className={
-                `duration-300 outline-none focus:bg-gray-300 dark:focus:bg-gray-600
-                ${showSkeleton ? 'cursor-not-allowed' : 'hover:bg-gray-300 dark:hover:bg-gray-600'}
+                `duration-300 outline-none focus:bg-gray-300 dark:focus:bg-gray-700
+                ${showSkeleton ? 'cursor-not-allowed' : 'hover:bg-gray-300 dark:hover:bg-gray-700'}
               `}
               onClick={changePage('prev')}
-              onKeydown={keydownEnter(changePage('prev'))}
+              onKeyDown={keydownEnter(changePage('prev'))}
             >
               <div
                 className={`
@@ -149,11 +145,11 @@ export default function Table({
             <div
               tabIndex={!showSkeleton ? 0 : -1}
               className={`
-                duration-300 outline-none focus:bg-gray-300 dark:focus:bg-gray-600
-                ${showSkeleton ? 'cursor-not-allowed' : 'hover:bg-gray-300 dark:hover:bg-gray-600'}
+                duration-300 outline-none focus:bg-gray-300 dark:focus:bg-gray-700
+                ${showSkeleton ? 'cursor-not-allowed' : 'hover:bg-gray-300 dark:hover:bg-gray-700'}
               `}
               onClick={changePage('next')}
-              onKeydown={keydownEnter(changePage('next'))}
+              onKeyDown={keydownEnter(changePage('next'))}
             >
               <div
                 className={`
