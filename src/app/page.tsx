@@ -1,12 +1,14 @@
 'use client'
 
+import { useState } from 'react'
 import dynamic from 'next/dynamic'
 import { useTheme } from 'next-themes'
 import { useBreakpoint } from '@/hook/useBreakpoint'
 import { dateShownFormat, timeShownFormat, formatNum, formatCurrency } from '@/lib/localUtil'
+import InputText from '@/component/partial/InputText'
+import IconSvg from '@/component/partial/IconSvg'
 import Skeleton from '@/component/partial/Skeleton'
 import Table from '@/component/partial/Table'
-import IconSvg from '@/component/partial/IconSvg'
 import {
   ResponsiveContainer,
   BarChart,
@@ -58,7 +60,7 @@ export default function Report() {
       { date: '2025-03-15T03:24:00', value: 99807000 }
     ]
   }
-  const showSkeletonTable = false
+  const showSkeleton = false
   const chartData = {
     product: {
       label: highlightData?.productChart?.slice(0, bp.smallerThan('sm') ? 3 : bp.smallerThan('md') ? 5 : bp.smallerThan('lg') ? 4 : 6).map(v => v.name),
@@ -123,8 +125,21 @@ export default function Report() {
       theme: { mode: theme }
     }
   }
+  const [filterDate, setFilterDate] = useState('')
   return (
     <div className="grid grid-cols-1 gap-4 md:grid-cols-5">
+      <div className="col-span-full">
+        <InputText
+          value={filterDate}
+          placeholder="Filter by date"
+          iconAt="right"
+          filled={filterDate}
+          className="relative"
+          onInput={setFilterDate}
+          showSkeleton={showSkeleton}
+          icon={<IconSvg name="sun-light" className="h-6 w-6" />}
+        />
+      </div>
       <div className="col-span-full md:col-span-2">
         <div className="grid grid-cols-1 gap-4 h-full sm:grid-cols-2">
           {[...Array(4)].map((_, i) => (
@@ -158,15 +173,6 @@ export default function Report() {
             Sales Value History
           </div>
           <Chart type="line" series={chartData.sale.data} height="300" options={chartOpt.sale} />
-          {/*<ResponsiveContainer height={300}>
-            <LineChart data={highlightData?.saleChart}>
-              <XAxis dataKey="name" />
-              <YAxis />
-              <Tooltip />
-              <Legend />
-              <Line type="monotone" dataKey="value" stroke="#8e51ff" />
-            </LineChart>
-          </ResponsiveContainer>*/}
         </div>
       </div>
       <div className="col-span-full">
@@ -175,7 +181,7 @@ export default function Report() {
             Transaction History
           </div>
           <Table
-            showSkeleton={showSkeletonTable}
+            showSkeleton={showSkeleton}
             emptyData={highlightData?.history?.length > 0 ? false : true}
             emptyDataText="Oops, no products sold"
             minShowTableAt="xs"

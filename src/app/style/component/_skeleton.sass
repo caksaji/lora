@@ -12,8 +12,8 @@
       rgba(#fff, 0)
     )
     animation: shimmer 2s infinite
-html.dark .skeleton
-  @apply bg-gray-800
+html[data-theme="dark"] .skeleton
+  @apply bg-gray-700
   &:after
     background-image: linear-gradient(
       90deg,
