@@ -1,5 +1,7 @@
 'use client'
 
+import Skeleton from '@/component/partial/Skeleton'
+import Table from '@/component/partial/Table'
 import IconSvg from '@/component/partial/IconSvg'
 
 import {
@@ -37,6 +39,16 @@ export default function Report() {
       { name: '2025-03-21', value: 1890 }
     ]
   }
+  const recentSale = {
+    data: [
+      { date: '2025-03-15T03:24:00', value: 99807000 },
+      { date: '2025-03-15T03:24:00', value: 99807000 },
+      { date: '2025-03-15T03:24:00', value: 99807000 },
+      { date: '2025-03-15T03:24:00', value: 99807000 },
+      { date: '2025-03-15T03:24:00', value: 99807000 }
+    ]
+  }
+  const showSkeletonTable = false
   return (
     <div className="grid grid-cols-1 gap-4 md:grid-cols-5">
       <div className="col-span-full md:col-span-2">
@@ -44,7 +56,7 @@ export default function Report() {
           {[...Array(4)].map((_, i) => (
             <div key={i} className="col-span-1 flex items-center gap-4 p-4 rounded-xl bg-gray-100 md:flex-col md:items-start md:justify-between">
               <div className="flex items-center justify-center h-16 w-16 rounded-full text-4xl bg-gray-200">
-                <span>💰</span>
+                <span>{i === 0 ? '💰' : i === 1 ? '🛒' : i === 2 ? '👍' : '👎'}</span>
               </div>
               <div>
                 <div className="text-gray-400">
@@ -96,11 +108,38 @@ export default function Report() {
             Recent Sales
           </div>
           <div className="overflow-y-auto" style={{height: 'calc(100% - ((1rem * 2) + (2rem + 1rem)))'}}>
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris nec metus sit amet magna aliquam ullamcorper ac vel magna. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum sagittis ultricies neque vitae porttitor. Mauris egestas dictum ipsum, sit amet accumsan quam suscipit in. Phasellus est nulla, faucibus a maximus id, tempus a ipsum. Nulla vitae sem sit amet urna gravida condimentum. Donec dictum ac est sit amet accumsan. Proin at lectus in arcu iaculis varius non et lorem. Praesent aliquet sed eros a molestie. Proin sed velit massa. Sed tristique placerat ornare. Aliquam ultrices lacus quis viverra lobortis. Lorem ipsum.
+            <Table
+              showSkeleton={showSkeletonTable}
+              emptyData={recentSale.data?.length > 0 ? false : true}
+              emptyDataText="Oops, no products sold"
+              minShowTableAt="xs"
+              thead={
+                <>
+                  <span className="tcell w-full shrink">At</span>
+                  <span className="tcell w-28 text-center">Value</span>
+                </>
+              }
+              tbody={recentSale.data?.map((d, i) => (
+                <div key={i} className="tbody">
+                  <span className="tcell w-full shrink">{d.date}</span>
+                  <span className="tcell w-28 text-right">{d.value}</span>
+                  {/*<div className="tcell w-28">
+                    <div className="flex w-full space-x-2">
+                      <SpInputRadio v-model="atmosphere.status" type="toggle" :disabled="loadingToggle" :loading="loadingToggle" @change="changeStatus(atmosphere.id)" />
+                      <SpButton color="blue" size="sm" icon-only @click="openModalEdit(atmosphere)">
+                        <template #icon>
+                          <IconSvg name="edit-pencil" className="h-5 w-5" />
+                        </template>
+                      </SpButton>
+                    </div>
+                  </div>*/}
+                </div>
+              ))}
+            />
           </div>
-          <div tabIndex="0" className="flex items-center gap-2 w-fit mx-auto link">
+          <div tabIndex={0} className="flex items-center gap-2 w-fit mx-auto link">
             <span>View all</span>
-            <span className="h-5 w-5"><IconSvg name="arrow-right" /></span>
+            <IconSvg name="arrow-right" className="h-5 w-5" />
           </div>
         </div>
       </div>

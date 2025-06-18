@@ -1,0 +1,21 @@
+.card-col
+  &:not(.custom-col)
+    @apply col-span-12 sm:col-span-6 xl:col-span-4
+  .card-border
+    @apply p-4 border border-gray-400 dark:border-gray-600 rounded-md
+    .title
+      @apply font-semibold
+
+.sp-table
+  .tbody
+    @apply flex w-full rounded-md duration-300 odd:bg-gray-100 hover:bg-violet-100 dark:odd:bg-gray-800 dark:hover:bg-violet-900
+  .tcell
+    @apply py-3 pr-4 first:pl-4
+    &.shrink
+      @apply flex-shrink
+    &:not(.shrink)
+      @apply flex-shrink-0
+    &.detail
+      @apply duration-300
+      &:not(.shown)
+        @apply h-0 py-0
