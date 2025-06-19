@@ -5,7 +5,7 @@ import dynamic from 'next/dynamic'
 import { useTheme } from 'next-themes'
 import { useBreakpoint } from '@/hook/useBreakpoint'
 import { dateShownFormat, timeShownFormat, formatNum, formatCurrency } from '@/lib/localUtil'
-import InputText from '@/component/partial/InputText'
+import Select from '@/component/partial/Select'
 import IconSvg from '@/component/partial/IconSvg'
 import Skeleton from '@/component/partial/Skeleton'
 import Table from '@/component/partial/Table'
@@ -125,20 +125,28 @@ export default function Report() {
       theme: { mode: theme }
     }
   }
-  const [filterDate, setFilterDate] = useState('')
+  const dateRangeList = [
+    { id: 'all', text: 'All' },
+    { id: '1d', text: 'Today' },
+    { id: '7d', text: 'Last 7 day' },
+    { id: '1m', text: 'This month' },
+    { id: '1y', text: 'This year' },
+    { id: 'custom', text: 'Custom' }
+  ]
+  const [filterDate, setFilterDate] = useState<any>('')
   return (
     <div className="grid grid-cols-1 gap-4 md:grid-cols-5">
       <div className="col-span-full">
-        <InputText
-          value={filterDate}
-          placeholder="Filter by date"
-          iconAt="right"
-          filled={filterDate}
-          className="relative"
-          onInput={setFilterDate}
-          showSkeleton={showSkeleton}
-          icon={<IconSvg name="sun-light" className="h-6 w-6" />}
-        />
+        <ul className="list-disc list-inside text-xl text-red-500">
+          <li>Create date range filter</li>
+        </ul>
+      </div>
+      <div className="col-span-full">
+        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
+          <div className="col-span-1">
+            <Select list={dateRangeList} value={filterDate} preSelect={true} showSkeleton={showSkeleton} onChange={setFilterDate} />
+          </div>
+        </div>
       </div>
       <div className="col-span-full md:col-span-2">
         <div className="grid grid-cols-1 gap-4 h-full sm:grid-cols-2">

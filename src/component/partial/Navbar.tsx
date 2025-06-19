@@ -21,7 +21,7 @@ export default function Navbar() {
   }
   return (
     <div className="h-16">
-      <div className="fixed top-0 left-0 z-10 w-dvw bg-gray-200 dark:bg-gray-900">
+      <div className="fixed top-0 left-0 z-10 w-dvw border-b border-gray-300 bg-gray-200 dark:bg-gray-900 dark:border-gray-700">
         <div className="container">
           <div className="flex items-center gap-4 justify-between w-full">
             <div className="flex gap-4 font-semibold">

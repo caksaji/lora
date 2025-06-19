@@ -28,7 +28,8 @@ export default function InputText({
   onClick,
   onFocus,
   onInput,
-  onBlur
+  onBlur,
+  onKeydown
 }: {
   className?: string,
   showSkeleton?: boolean,
@@ -47,13 +48,14 @@ export default function InputText({
   iconAt?: 'right' | 'left',
   iconPlacement?: 'inside' | 'outside',
   filled?: string | boolean,
-  value,
+  value: string,
   imitationValue?: React.ReactNode,
   icon?: React.ReactNode,
   onClick?: () => void,
   onFocus?: () => void,
   onInput?: (val: string) => void,
-  onBlur?: () => void
+  onBlur?: () => void,
+  onKeydown?: (val: string) => void
 }) {
   const id = useId()
   const [focused, setFocused] = useState(false)
@@ -100,6 +102,10 @@ export default function InputText({
     onBlur?.()
     setFocused(false)
   }
+  const keydown = (e: React.KeyboardEvent) => {
+    onKeydown?.(e.key)
+    return e.target.value
+  }
 
   if (showSkeleton) {
     return <Skeleton className={`rounded-md ${skeletonWidth ?? 'w-full'} ${type === 'textarea' ? 'h-24' : 'h-10'} ${className}`} />
@@ -135,7 +141,7 @@ export default function InputText({
                   style={{ ...padding(), minHeight: `calc(2px + (${fragmentedRem} * 2) + 1.5rem + 1.59px)` }}
                   onFocus={focus}
                   onClick={click}
-                  onKeyDown={click}
+                  onKeyDown={keydown}
                   onBlur={blur}
                 >
                   {hasImitationValue ?
@@ -162,6 +168,7 @@ export default function InputText({
                 className={`${inputTextKindClass} ${inputClass}`}
                 style={{textAlign: 'inherit', ...padding()}}
                 onFocus={focus}
+                onKeyDown={keydown}
                 onInput={e => input(e.target.value)}
                 onBlur={blur}
               />

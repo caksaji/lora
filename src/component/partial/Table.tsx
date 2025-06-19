@@ -65,7 +65,7 @@ export default function Table({
       {(minShowTableAt !== 'never' && bp.greaterOrEqual(minShowTableAt)) &&
         <div className="sp-table">
           <div className="divide-y divide-gray-200 dark:divide-gray-800">
-            <div className="flex w-full rounded-md bg-gray-100 text-gray-400 font-semibold dark:bg-gray-700">
+            <div className="flex w-full rounded-md bg-gray-200 text-gray-400 font-semibold dark:bg-gray-700">
               {thead}
             </div>
             {(!emptyData && !showSkeleton) && tbody}
