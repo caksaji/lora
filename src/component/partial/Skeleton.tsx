@@ -1,9 +1,11 @@
 export default function Skeleton({
-  className
+  className,
+  style
 }: {
-  className?: string
+  className?: string,
+  style?: CSSProperties
 }) {
   return (
-    <div className={`skeleton ${className}`} />
+    <div className={`skeleton duration-300 ${className}`} style={style} />
   )
 }

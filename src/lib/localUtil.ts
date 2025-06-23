@@ -1,6 +1,10 @@
+export const baseUrl = process.env.API_BASE_URL
 export function dateShownFormat(date: string, dtStyle: string = 'long') {
   const nd = new Date(date)
   return new Intl.DateTimeFormat('en-US', { dateStyle: dtStyle }).format(nd)
+}
+export function dateSent(date: Date = new Date()) {
+  return date.toISOString().split('T')[0]
 }
 export function timeShownFormat(time: string) {
   const nd = new Date(time)

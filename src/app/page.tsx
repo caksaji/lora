@@ -1,14 +1,15 @@
 'use client'
 
-import { useState, forwardRef } from 'react'
+import { useState, useEffect, forwardRef } from 'react'
 import dynamic from 'next/dynamic'
 import { useTheme } from 'next-themes'
 import { useBreakpoint } from '@/hook/useBreakpoint'
-import { dateShownFormat, timeShownFormat, formatNum, formatCurrency } from '@/lib/localUtil'
+import { dateShownFormat, timeShownFormat, formatNum, formatCurrency, dateSent } from '@/lib/localUtil'
+import { getAll } from '@/lib/api/report'
 import InputDateRange from '@/component/partial/InputDateRange'
+import Skeleton from '@/component/partial/Skeleton'
 import IconSvg from '@/component/partial/IconSvg'
 import Select from '@/component/partial/Select'
-import Skeleton from '@/component/partial/Skeleton'
 import Table from '@/component/partial/Table'
 import {
   ResponsiveContainer,
@@ -25,56 +26,34 @@ import {
 const Chart = dynamic(() => import('react-apexcharts'), { ssr: false })
 
 export default function Report() {
+  const [reportData, setReportData] = useState({})
+  const [showSkeleton, setShowSkeleton] = useState(true)
+  const [filter, setFilter] = useState({
+    date: '',
+    range: [] as [Date, Date] | []
+  })
   const { theme } = useTheme()
   const bp = useBreakpoint()
-  const highlightData = {
-    revenue: 11111,
-    sale: 22222,
-    hiSale: 'Product Aaaaa',
-    loSale: 'Product Zzzzz',
-    productChart: [
-      { name: 'Product A', sales: 4000 },
-      { name: 'Product B', sales: 3000 },
-      { name: 'Product C', sales: 2000 },
-      { name: 'Product D', sales: 2780 },
-      { name: 'Product E', sales: 1890 },
-      { name: 'Product F', sales: 4000 },
-      { name: 'Product G', sales: 3000 },
-      { name: 'Product H', sales: 2000 },
-      { name: 'Product I', sales: 2780 },
-      { name: 'Product J', sales: 1890 }
-    ],
-    saleChart: [
-      { date: '2025-03-15', value: 4000 },
-      { date: '2025-03-16', value: 2000 },
-      { date: '2025-03-17', value: 3000 },
-      { date: '2025-03-18', value: 2780 },
-      { date: '2025-03-19', value: 1890 },
-      { date: '2025-03-20', value: 2780 },
-      { date: '2025-03-21', value: 1890 }
-    ],
-    history: [
-      { date: '2025-03-15T03:24:00', value: 99807000 },
-      { date: '2025-03-15T03:24:00', value: 99807000 },
-      { date: '2025-03-15T03:24:00', value: 99807000 },
-      { date: '2025-03-15T03:24:00', value: 99807000 },
-      { date: '2025-03-15T03:24:00', value: 99807000 }
-    ]
-  }
-  const showSkeleton = false
+  const monthList = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']
   const chartData = {
     product: {
-      label: highlightData?.productChart?.slice(0, bp.smallerThan('sm') ? 3 : bp.smallerThan('md') ? 5 : bp.smallerThan('lg') ? 4 : 6).map(v => v.name),
+      label: reportData?.productChart?.slice(0, bp.smallerThan('sm') ? 3 : bp.smallerThan('md') ? 5 : bp.smallerThan('lg') ? 4 : 6).map(v => v.name),
       data: [{
         name: 'Sold',
-        data: highlightData?.productChart?.slice(0, bp.smallerThan('sm') ? 3 : bp.smallerThan('md') ? 5 : bp.smallerThan('lg') ? 4 : 6).map(v => v.sales)
+        data: reportData?.productChart?.slice(0, bp.smallerThan('sm') ? 3 : bp.smallerThan('md') ? 5 : bp.smallerThan('lg') ? 4 : 6).map(v => v.sales)
       }]
     },
     sale: {
-      label: highlightData?.saleChart?.map(v => dateShownFormat(v.date, 'medium')),
+      label: reportData?.saleChart?.map((l) => {
+        return filter.date?.id === '1d' ? new Date(l.date).getHours()
+          : filter.date?.id === '7d' || filter.date?.id === 'custom' ? dateShownFormat(l.date, 'medium')
+          : filter.date?.id === '1m' ? new Date(l.date).getDate()
+          : filter.date?.id === '1y' ? monthList[new Date(l.date).getMonth()]
+          : new Date(l.date).getFullYear()
+      }),
       data: [{
         name: 'Value',
-        data: highlightData?.saleChart?.map(v => v.value)
+        data: reportData?.saleChart?.map(v => v.value)
       }]
     }
   }
@@ -134,18 +113,59 @@ export default function Report() {
     { id: '1y', text: 'This year' },
     { id: 'custom', text: 'Custom' }
   ]
-  const [filter, setFilter] = useState({
-    date: '',
-    range: [] as [Date, Date] | []
-  })
+
+  useEffect(() => {
+    const nd = new Date()
+    let range = []
+    let runMethod = false
+    if (filter.date?.id !== dateRangeList[dateRangeList.length - 1].id) {
+      if (filter.date?.id === dateRangeList[1].id) {
+        range = [dateSent(), dateSent()]
+      } else if (filter.date?.id === dateRangeList[2].id) {
+        range = [dateSent(new Date(nd.setDate(nd.getDate() - 6))), dateSent()]
+      } else if (filter.date?.id === dateRangeList[3].id) {
+        const month = dateSent().split('-')
+        range = [`${month[0]}-${month[1]}`, `${month[0]}-${month[1]}`]
+      } else if (filter.date?.id === dateRangeList[4].id) {
+        const year = dateSent().split('-')
+        range = [year[0], year[0]]
+      }
+      runMethod = true
+    }
+    if (runMethod) {
+      getData(range)
+    }
+  }, [filter])
 
   const changeFilter = (v) => {
     const { field, value } = v
     setFilter(d => ({ ...d, [field]: value }))
   }
+  const changeRange = (selection) => {
+    changeFilter({ field: 'range', value: selection })
+    const dateArr = JSON.parse(JSON.stringify(selection))
+    getData([
+      dateSent(new Date(new Date(dateArr[0]).setDate(new Date(dateArr[0]).getDate() + 1))),
+      dateSent(new Date(new Date(dateArr[1]).setDate(new Date(dateArr[1]).getDate() + 1)))
+    ])
+  }
+  const getData = (range: number = []) => {
+    setShowSkeleton(true)
+    getAll({ date: range }).then((res) => {
+      setReportData(res)
+      setShowSkeleton(false)
+    })
+  }
 
   return (
     <div className="grid grid-cols-1 gap-4 md:grid-cols-5">
+      <div className="col-span-full text-xl text-red-500">
+        <ul className="list-disc list-inside">
+          <li>
+            Product page
+          </li>
+        </ul>
+      </div>
       <div className="col-span-full">
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
           <div className="col-span-1">
@@ -158,25 +178,30 @@ export default function Report() {
               onChange={selection => changeFilter({ field: 'date', value: selection })}
             />
           </div>
-          <div className="col-span-1">
-            <InputDateRange value={filter.range} minYear={new Date().getFullYear() - 4} onChange={selection => changeFilter({ field: 'range', value: selection })} />
-          </div>
+          {filter.date?.id === dateRangeList[dateRangeList.length - 1].id &&
+            <div className="col-span-1">
+              <InputDateRange value={filter.range} minYear={new Date().getFullYear() - 4} showSkeleton={showSkeleton} onChange={selection => changeRange(selection)} />
+            </div>
+          }
         </div>
       </div>
       <div className="col-span-full md:col-span-2">
         <div className="grid grid-cols-1 gap-4 h-full sm:grid-cols-2">
           {[...Array(4)].map((_, i) => (
             <div key={i} className="col-span-1 flex items-center gap-4 p-4 rounded-xl bg-gray-100 md:flex-col md:items-start md:justify-between dark:bg-gray-800">
-              <div className="flex items-center justify-center h-16 w-16 rounded-full text-4xl bg-gray-200 dark:bg-gray-700">
+              <div className="flex flex-shrink-0 items-center justify-center h-16 w-16 rounded-full text-4xl bg-gray-200 dark:bg-gray-700">
                 <span>{i === 0 ? '💰' : i === 1 ? '🛒' : i === 2 ? '👍' : '👎'}</span>
               </div>
-              <div>
+              <div className="w-full">
                 <div className="text-gray-400">
                   {i === 0 ? 'Total revenue' : i === 1 ? 'Total sales' : i === 2 ? 'Highest sales' : 'Lowest sales'}
                 </div>
-                <div className="text-lg font-semibold">
-                  {i === 0 ? formatCurrency(highlightData?.revenue) : i === 1 ? formatNum(highlightData?.sale) : i === 2 ? highlightData?.hiSale : highlightData?.loSale}
-                </div>
+                {showSkeleton
+                  ? <Skeleton className="h-7 w-1/3 rounded-md mt-1" />
+                  : <div className="text-lg font-semibold">
+                    {i === 0 ? formatCurrency(reportData?.revenue) : i === 1 ? formatNum(reportData?.sale) : i === 2 ? reportData?.hiSale : reportData?.loSale}
+                  </div>
+                }
               </div>
             </div>
           ))}
@@ -187,7 +212,14 @@ export default function Report() {
           <div className="text-lg font-semibold">
             Top Selling Products
           </div>
-          <Chart type="bar" series={chartData.product.data} height="300" options={chartOpt.product} />
+          {showSkeleton
+            ? <div className="flex gap-4 w-full pb-4 pl-4 border-b border-l border-gray-400" style={{ height: '300px' }}>
+              {[...Array(bp.smallerThan('sm') ? 3 : bp.smallerThan('md') ? 5 : bp.smallerThan('lg') ? 4 : 6)].map((_, i) => (
+                <Skeleton key={i} className="w-full rounded-md mt-auto" />
+              ))}
+            </div>
+            : <Chart type="bar" series={chartData.product.data} height="300" options={chartOpt.product} />
+          }
         </div>
       </div>
       <div className="col-span-full">
@@ -195,7 +227,10 @@ export default function Report() {
           <div className="text-lg font-semibold">
             Sales Value History
           </div>
-          <Chart type="line" series={chartData.sale.data} height="300" options={chartOpt.sale} />
+          {showSkeleton
+            ? <Skeleton className="h-2 rounded-md" />
+            : <Chart type="line" series={chartData.sale.data} height="300" options={chartOpt.sale} />
+          }
         </div>
       </div>
       <div className="col-span-full">
@@ -205,7 +240,7 @@ export default function Report() {
           </div>
           <Table
             showSkeleton={showSkeleton}
-            emptyData={highlightData?.history?.length > 0 ? false : true}
+            emptyData={reportData?.history?.length > 0 ? false : true}
             emptyDataText="Oops, no products sold"
             minShowTableAt="xs"
             thead={
@@ -214,7 +249,7 @@ export default function Report() {
                 <span className="tcell w-32 text-center">Value</span>
               </>
             }
-            tbody={highlightData?.history?.map((d, i) => (
+            tbody={reportData?.history?.map((d, i) => (
               <div key={i} className="tbody">
                 <span className="tcell w-full shrink">{dateShownFormat(d.date, 'medium')}, {timeShownFormat(d.date)}</span>
                 <span className="tcell w-32 text-right">{formatCurrency(d.value)}</span>

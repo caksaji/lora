@@ -8,14 +8,22 @@ import InputText from '@/component/partial/InputText'
 import IconSvg from '@/component/partial/IconSvg'
 
 export default function InputDateRange({
+  showSkeleton = false,
+  skeletonWidth,
   value,
   minYear = 1970,
   onChange
 }: {
+  showSkeleton?: boolean,
+  skeletonWidth?: string,
   value?: [],
   minYear?: number,
   onChange?: (val: any) => void
 }) {
+  const [yearList, setYearList] = useState<number>([])
+  const [selection, setSelection] = useState([] as [Date, Date] | [])
+  const monthList = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']
+
   useEffect(() => {
     setYearList(Array.from(
       { length: (new Date().getFullYear() - (minYear)) + 1 },
@@ -23,10 +31,6 @@ export default function InputDateRange({
     ))
   }, [minYear])
   useEffect(() => setSelection(value), [value])
-
-  const monthList = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']
-  const [yearList, setYearList] = useState<number>([])
-  const [selection, setSelection] = useState([] as [Date, Date] | [])
 
   const changeSelection = (v) => {
     setSelection(v)
@@ -38,6 +42,7 @@ export default function InputDateRange({
       <InputText
         ref={ref}
         value=""
+        showSkeleton={showSkeleton}
         placeholder="Select date range"
         imitation={true}
         hasImitationValue={displayValue ? true : false}
