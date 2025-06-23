@@ -160,7 +160,6 @@ export default function Select({
         iconAt="right"
         disabled={disabled}
         error={error}
-        className="relative"
         onClick={clickInput}
         onFocus={() => setShowOption(true)}
         onInput={search}
@@ -169,16 +168,16 @@ export default function Select({
         icon={
           !icon && !clearable ? <IconSvg name="nav-arrow-down" className={`h-6 w-6 transform duration-300 ${showOption && '-rotate-180'}`} onClick={() => setShowOption(!showOption)} />
             : !icon && clearable && !selection ? <IconSvg name="nav-arrow-down" className={`h-6 w-6 transform duration-300 ${showOption && '-rotate-180'}`} onClick={() => setShowOption(!showOption)} />
-            : !icon && clearable && selection ? <IconSvg name="xmark" tabIndex={0} className="h-6 w-6 rounded-full outline-0 cursor-pointer ring-prime-600 ring-opacity-90 focus:ring click-effect" onClick={() => select('')} />
+            : !icon && clearable && selection ? <IconSvg name="xmark" tabIndex={0} className="h-6 w-6 rounded-full outline-0 cursor-pointer ring-violet-600/90 focus:ring click-effect" onClick={() => select('')} />
             : icon
         }
       />
       {(!disabled && !showSkeleton) &&
         <div className="relative">
-          <div className={`flex flex-col w-full border-gray-300 rounded-md bg-white overflow-x-hidden duration-300 dark:bg-gray-800 dark:border-gray-800 ${showOption && 'py-1 border overflow-y-auto'} ${!showOption && 'border-0 overflow-y-hidden'} ${absoluteOptionPosition && 'absolute top-0 left-0 z-10'}`} style={{ maxHeight: showOption ? '187px' : 0 }}>
+          <div className={`flex flex-col w-full border-gray-300 rounded-md bg-gray-100 overflow-x-hidden duration-300 shadow-lg dark:bg-gray-800 dark:border-gray-700 ${showOption && 'py-1 border overflow-y-auto'} ${!showOption && 'border-0 overflow-y-hidden'} ${absoluteOptionPosition && 'absolute top-0 left-0 z-10'}`} style={{ maxHeight: showOption ? '187px' : 0 }}>
             {filteredList().length > 0 ? (
               filteredList()?.map((d, i) => (
-                <div key={i} ref={el => optRef.current[i] = el} className={`w-full py-1 px-4 duration-300 cursor-default hover:bg-gray-200 dark:hover:bg-gray-700 ${hoverIndex === i && 'bg-gray-200 dark:bg-gray-700'} ${selection && selection.text === d.text && 'bg-prime-600 text-white'}`} onMouseOver={() => setHoverIndex(i)} onClick={() => select(d)}>
+                <div key={i} ref={el => optRef.current[i] = el} className={`w-full py-1 px-4 duration-300 cursor-default hover:bg-gray-300 dark:hover:bg-gray-700 ${hoverIndex === i && 'bg-gray-300 dark:bg-gray-700'} ${selection && selection.text === d.text && 'bg-violet-600 text-white'}`} onMouseOver={() => setHoverIndex(i)} onClick={() => select(d)}>
                   <div>
                     {d.text}
                   </div>

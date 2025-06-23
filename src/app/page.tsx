@@ -1,12 +1,13 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, forwardRef } from 'react'
 import dynamic from 'next/dynamic'
 import { useTheme } from 'next-themes'
 import { useBreakpoint } from '@/hook/useBreakpoint'
 import { dateShownFormat, timeShownFormat, formatNum, formatCurrency } from '@/lib/localUtil'
-import Select from '@/component/partial/Select'
+import InputDateRange from '@/component/partial/InputDateRange'
 import IconSvg from '@/component/partial/IconSvg'
+import Select from '@/component/partial/Select'
 import Skeleton from '@/component/partial/Skeleton'
 import Table from '@/component/partial/Table'
 import {
@@ -133,18 +134,32 @@ export default function Report() {
     { id: '1y', text: 'This year' },
     { id: 'custom', text: 'Custom' }
   ]
-  const [filterDate, setFilterDate] = useState<any>('')
+  const [filter, setFilter] = useState({
+    date: '',
+    range: [] as [Date, Date] | []
+  })
+
+  const changeFilter = (v) => {
+    const { field, value } = v
+    setFilter(d => ({ ...d, [field]: value }))
+  }
+
   return (
     <div className="grid grid-cols-1 gap-4 md:grid-cols-5">
       <div className="col-span-full">
-        <ul className="list-disc list-inside text-xl text-red-500">
-          <li>Create date range filter</li>
-        </ul>
-      </div>
-      <div className="col-span-full">
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
           <div className="col-span-1">
-            <Select list={dateRangeList} value={filterDate} preSelect={true} showSkeleton={showSkeleton} onChange={setFilterDate} />
+            <Select
+              list={dateRangeList}
+              value={filter.date}
+              preSelect={true}
+              showSkeleton={showSkeleton}
+              absoluteOptionPosition={true}
+              onChange={selection => changeFilter({ field: 'date', value: selection })}
+            />
+          </div>
+          <div className="col-span-1">
+            <InputDateRange value={filter.range} minYear={new Date().getFullYear() - 4} onChange={selection => changeFilter({ field: 'range', value: selection })} />
           </div>
         </div>
       </div>

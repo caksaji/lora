@@ -1,0 +1,33 @@
+.react-datepicker-wrapper
+  @apply w-full
+
+.react-datepicker__tab-loop .react-datepicker-popper
+  @apply drop-shadow-lg
+  *
+    @apply text-gray-800 dark:text-gray-200
+  .react-datepicker__triangle
+    @apply fill-gray-200 dark:fill-gray-700
+  .react-datepicker
+    @apply rounded-md bg-gray-100 border-gray-300 dark:bg-gray-800 dark:border-gray-700
+    font-family: "Poppins", sans-serif
+    .react-datepicker__month-container
+      .react-datepicker__header
+        @apply bg-gray-200 border-gray-300 dark:bg-gray-700 dark:border-gray-600
+        .react-datepicker__day-name
+          @apply h-8 w-8 border border-transparent m-0 text-center text-gray-800 first:text-red-600 dark:text-gray-200 dark:first:text-red-400
+          line-height: 2rem
+      .react-datepicker__month .react-datepicker__week .react-datepicker__day
+        @apply h-8 w-8 border border-transparent rounded-full m-0 text-center text-gray-800 duration-300 hover:bg-violet-700/25 dark:text-gray-200 dark:hover:bg-violet-400/50
+        line-height: 2rem
+        &.react-datepicker__day
+          @apply outline-0 ring-violet-700/90 duration-300 focus:ring-3
+        &.react-datepicker__day--today
+          @apply font-semibold text-violet-700 border-violet-700 dark:text-violet-400 dark:border-violet-400
+          &:not:hover
+            @apply bg-transparent
+        &.react-datepicker__day--weekend:not(:last-child)
+          @apply text-red-600 dark:text-red-400
+        &.react-datepicker__day--keyboard-selected, &.react-datepicker__day--in-range, &.react-datepicker__day--in-selecting-range
+          @apply text-gray-200 bg-violet-400 dark:bg-violet-700
+        &.react-datepicker__day--outside-month
+          @apply opacity-40

@@ -1,10 +1,10 @@
 'use client'
 
-import { useId, useState } from 'react'
+import { forwardRef, useId, useState } from 'react'
 import Skeleton from '@/component/partial/Skeleton'
 import ErrorText from '@/component/partial/ErrorText'
 
-export default function InputText({
+const InputText = forwardRef(({
   className,
   showSkeleton = false,
   skeletonWidth,
@@ -56,7 +56,7 @@ export default function InputText({
   onInput?: (val: string) => void,
   onBlur?: () => void,
   onKeydown?: (val: string) => void
-}) {
+}, ref) => {
   const id = useId()
   const [focused, setFocused] = useState(false)
   const fragmentedRem = '(1rem / 4)'
@@ -136,8 +136,9 @@ export default function InputText({
             {imitation &&
               <>
                 <div
+                  ref={ref}
                   tabIndex={disabled ? -1 : 0}
-                  className={`select-none ${inputTextKindClass} ${inputClass} ${!disabled && 'cursor-text'}`}
+                  className={`whitespace-nowrap overflow-hidden select-none ${inputTextKindClass} ${inputClass} ${!disabled && 'cursor-text'}`}
                   style={{ ...padding(), minHeight: `calc(2px + (${fragmentedRem} * 2) + 1.5rem + 1.59px)` }}
                   onFocus={focus}
                   onClick={click}
@@ -147,7 +148,7 @@ export default function InputText({
                   {hasImitationValue ?
                     imitationValue
                     :
-                    <div className={`whitespace-nowrap overflow-hidden ${error ? 'text-red-400' : 'text-gray-400'}`}>
+                    <div className={`${error ? 'text-red-400' : 'text-gray-400'}`}>
                       {placeholder}
                     </div>
                   }
@@ -196,4 +197,6 @@ export default function InputText({
       {error && <ErrorText text={error} />}
     </div>
   )
-}
+})
+InputText.displayName = 'InputText'
+export default InputText
