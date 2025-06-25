@@ -17,17 +17,19 @@
 	- [X] Table
 	- [X] Error data 404
 - [ ] Page
-	- [X] Report
+	- [ ] Report
 		- [X] Filter
 		- [X] Highlight
 		- [X] Chart
-		- [X] Trx history
+		- [ ] Trx history
+			- [X] List
+			- [ ] Detail
 		- [X] API connection
 	- [ ] Product
 		- [ ] Filter
 			- [ ] Search by name
 			- [ ] Low stock
-		- [ ] Table (Name, stock, stock status, min stock, price)
+		- [X] Table (Name, stock, stock status, min stock, price)
 		- [ ] Add
 		- [ ] Update
 		- [ ] Innactivate

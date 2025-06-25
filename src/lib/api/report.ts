@@ -74,7 +74,6 @@ export async function getAll(filter) {
   return res
 }
 export async function getAllHistory(filter) {
-  console.log(filter)
   const raNum = (min: number, max: number) => {
     min = Math.ceil(min)
     max = Math.floor(max)
