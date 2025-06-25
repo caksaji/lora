@@ -1,6 +1,5 @@
 import { useState, useEffect } from 'react'
 import { useTheme } from 'next-themes'
-import { keydownEnter } from '@/lib/localUtil'
 import IconSvg from '@/component/partial/IconSvg'
 
 export default function ThemeSwitch() {
@@ -22,7 +21,7 @@ export default function ThemeSwitch() {
   }
 
   return (
-    <div tabIndex={0} className="flex-shrink-0 rounded-full cursor-pointer focussable click-effect" onClick={switchTheme} onKeyDown={keydownEnter(switchTheme)}>
+    <div tabIndex={0} className="flex-shrink-0 rounded-full cursor-pointer focussable click-effect" onClick={() => switchTheme()} onKeyDown={e => e.key === 'Enter' && switchTheme()}>
       <IconSvg name={theme === 'light' ? 'sun-light' : 'half-moon'} className="h-6 w-6" />
     </div>
   )

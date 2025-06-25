@@ -29,7 +29,7 @@ export default function RootLayout({
       <body className="min-h-dvh">
         <ThemeProvider>
           <Navbar />
-          <div className="container">
+          <div className="container" style={{ minHeight: 'calc(100dvh - (4rem + (1.5rem + 1.5rem + .5rem)))' }}>
             {children}
           </div>
           <Footer />

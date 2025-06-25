@@ -18,6 +18,3 @@ export function formatCurrency(number: number | string) {
   const num = Number(number)
   return new Intl.NumberFormat('en-US', { style: 'currency', currency: 'IDR', currencyDisplay: 'code', minimumFractionDigits: 0 }).format(num)
 }
-export const keydownEnter = (fn: () => void) => (e: React.KeyboardEvent) => {
-  if (e.key === 'Enter') fn()
-}

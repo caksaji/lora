@@ -2,7 +2,6 @@
 
 import Image from 'next/image'
 import { useRouter } from 'next/navigation'
-import { keydownEnter } from '@/lib/localUtil'
 
 export default function NotFound() {
   const router = useRouter()
@@ -25,7 +24,7 @@ export default function NotFound() {
                     {s}
                   </div>
                   {i === resolveStep404.length - 1 &&
-                    <span tabIndex={0} className="link" onClick={() => router.replace('/')} onKeyDown={() => keydownEnter(router.replace('/'))}>Back to home</span>
+                    <span tabIndex={0} className="link" onClick={() => router.replace('/')} onKeyDown={e => e.key === 'Enter' && router.replace('/')}>Back to home</span>
                   }
                 </div>
               </div>

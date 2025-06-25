@@ -1,4 +1,4 @@
-import { dateSent } from '@/lib/localUtil'
+import { dateSent, dateShownFormat } from '@/lib/localUtil'
 
 export async function getAll(filter) {
   const productList = ['Milk', 'Egg', 'Bread', 'Tomato', 'Cereal', 'Mineral water']
@@ -74,6 +74,7 @@ export async function getAll(filter) {
   return res
 }
 export async function getAllHistory(filter) {
+  console.log(filter)
   const raNum = (min: number, max: number) => {
     min = Math.ceil(min)
     max = Math.floor(max)
@@ -82,7 +83,7 @@ export async function getAllHistory(filter) {
   const historyList = () => {
     const data = []
     const oneDayMs = 1000 * 60 * 60 * 24
-    let splitVal = filter.date.length === 2 ? [filter.date[0].split('-'), filter.date[1].split('-')] : [dateSent().split('-'), dateSent().split('-')]
+    let splitVal = filter.date.length === 2 ? [dateShownFormat(filter.date[0]).split('-'), dateShownFormat(filter.date[1]).split('-')] : [dateSent().split('-'), dateSent().split('-')]
     const diffMs = Math.abs(new Date(splitVal[1].join('-')) - new Date(splitVal[0].join('-')))
     const dayNumber = Math.floor(diffMs / oneDayMs)
     for (let i = dayNumber; i >= 0; i--) {

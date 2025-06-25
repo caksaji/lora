@@ -173,13 +173,6 @@ export default function Report() {
 
   return (
     <div className="grid grid-cols-1 gap-4 md:grid-cols-5">
-      <div className="col-span-full text-xl text-red-500">
-        <ul className="list-disc list-inside">
-          <li>
-            Product page
-          </li>
-        </ul>
-      </div>
       <div className="col-span-full">
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
           <div className="col-span-1">
@@ -252,48 +245,43 @@ export default function Report() {
           <div className="text-lg font-semibold">
             Transaction History
           </div>
-          {historyData?.meta?.current_page &&
-            <Table
-              showSkeleton={showSkeleton}
-              emptyData={historyData?.data?.length > 0 ? false : true}
-              emptyDataText="Oops, no products sold"
-              minShowTableAt="xs"
-              meta={{
-                fromRow: historyData?.meta?.from_row,
-                toRow: historyData?.meta?.to_row,
-                totalRow: historyData?.meta?.total_row,
-                lenghtRow: historyData?.meta?.lenght_row,
-                currentPage: historyData?.meta?.current_page,
-                totalPage: historyData?.meta?.total_page
-              }}
-              onChangePage={to => {
-                console.log('onChangePage called with', to)
-                changeFilter({ field: 'page', value: to })
-              }}
-              thead={
-                <>
-                  <span className="tcell w-full shrink">At</span>
-                  <span className="tcell w-32 text-center">Value</span>
-                </>
-              }
-              tbody={historyData?.data?.map((d, i) => (
-                <div key={i} className="tbody">
-                  <span className="tcell w-full shrink">{dateShownFormat(d.date, 'medium')}, {timeShownFormat(d.date)}</span>
-                  <span className="tcell w-32 text-right">{formatCurrency(d.value)}</span>
-                  {/*<div className="tcell w-28">
-                    <div className="flex w-full space-x-2">
-                      <SpInputRadio v-model="atmosphere.status" type="toggle" :disabled="loadingToggle" :loading="loadingToggle" @change="changeStatus(atmosphere.id)" />
-                      <SpButton color="blue" size="sm" icon-only @click="openModalEdit(atmosphere)">
-                        <template #icon>
-                          <IconSvg name="edit-pencil" className="h-5 w-5" />
-                        </template>
-                      </SpButton>
-                    </div>
-                  </div>*/}
-                </div>
-              ))}
-            />
-          }
+          <Table
+            showSkeleton={showSkeletonTable}
+            emptyData={historyData?.data?.length > 0 ? false : true}
+            emptyDataText="Oops, no products sold"
+            minShowTableAt="xs"
+            meta={{
+              fromRow: historyData?.meta?.from_row,
+              toRow: historyData?.meta?.to_row,
+              totalRow: historyData?.meta?.total_row,
+              lenghtRow: historyData?.meta?.lenght_row,
+              currentPage: historyData?.meta?.current_page,
+              totalPage: historyData?.meta?.total_page
+            }}
+            onChangePage={to => changeFilter({ field: 'page', value: to })}
+            thead={
+              <>
+                <span className="tcell w-full shrink">At</span>
+                <span className="tcell w-32 text-center">Value</span>
+              </>
+            }
+            tbody={historyData?.data?.map((d, i) => (
+              <div key={i} className="tbody">
+                <span className="tcell w-full shrink">{dateShownFormat(d.date, 'medium')}, {timeShownFormat(d.date)}</span>
+                <span className="tcell w-32 text-right">{formatCurrency(d.value)}</span>
+                {/*<div className="tcell w-28">
+                  <div className="flex w-full space-x-2">
+                    <SpInputRadio v-model="atmosphere.status" type="toggle" :disabled="loadingToggle" :loading="loadingToggle" @change="changeStatus(atmosphere.id)" />
+                    <SpButton color="blue" size="sm" icon-only @click="openModalEdit(atmosphere)">
+                      <template #icon>
+                        <IconSvg name="edit-pencil" className="h-5 w-5" />
+                      </template>
+                    </SpButton>
+                  </div>
+                </div>*/}
+              </div>
+            ))}
+          />
         </div>
       </div>
     </div>

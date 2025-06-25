@@ -1,7 +1,7 @@
 'use client'
 
 import { useBreakpoint } from '@/hook/useBreakpoint'
-import { formatNum, keydownEnter } from '@/lib/localUtil'
+import { formatNum } from '@/lib/localUtil'
 import Skeleton from '@/component/partial/Skeleton'
 import ErrorData404 from '@/component/partial/ErrorData404'
 import IconSvg from '@/component/partial/IconSvg'
@@ -129,7 +129,7 @@ export default function Table({
                 ${showSkeleton ? 'cursor-not-allowed' : 'hover:bg-gray-300 dark:hover:bg-gray-700'}
               `}
               onClick={() => changePage('prev')}
-              onKeyDown={keydownEnter(() => changePage('prev'))}
+              onKeyDown={e => e.key === 'Enter' && changePage('prev')}
             >
               <div
                 className={`
@@ -149,7 +149,7 @@ export default function Table({
                 ${showSkeleton ? 'cursor-not-allowed' : 'hover:bg-gray-300 dark:hover:bg-gray-700'}
               `}
               onClick={() => changePage('next')}
-              onKeyDown={keydownEnter(() => changePage('next'))}
+              onKeyDown={e => e.key === 'Enter' && changePage('next')}
             >
               <div
                 className={`

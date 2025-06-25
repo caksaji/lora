@@ -3,7 +3,7 @@
 import { useEffect, useState, forwardRef } from 'react'
 import DatePicker from 'react-datepicker'
 import 'react-datepicker/dist/react-datepicker.css'
-import { dateShownFormat, keydownEnter } from '@/lib/localUtil'
+import { dateShownFormat } from '@/lib/localUtil'
 import InputText from '@/component/partial/InputText'
 import IconSvg from '@/component/partial/IconSvg'
 
@@ -76,7 +76,7 @@ export default function InputDateRange({
             nextMonthButtonDisabled
           }) => (
             <div className="flex items-center justify-between gap-4 w-full">
-              <div tabIndex={0} className={`h-6 w-6 rounded-full ${!prevMonthButtonDisabled && 'focussable click-effect cursor-pointer'}`} onClick={decreaseMonth} onKeyDown={keydownEnter(decreaseMonth)}>
+              <div tabIndex={0} className={`h-6 w-6 rounded-full ${!prevMonthButtonDisabled && 'focussable click-effect cursor-pointer'}`} onClick={decreaseMonth} onKeyDown={e => e.key === 'Enter' && decreaseMonth()}>
                 <IconSvg name="nav-arrow-left" className="h-6 w-6" />
               </div>
               <div className="flex items-center gap-4">
@@ -91,7 +91,7 @@ export default function InputDateRange({
                   ))}
                 </select>
               </div>
-              <div tabIndex={0} className={`h-6 w-6 rounded-full ${!nextMonthButtonDisabled && 'focussable click-effect cursor-pointer'}`} onClick={increaseMonth} onKeyDown={keydownEnter(increaseMonth)}>
+              <div tabIndex={0} className={`h-6 w-6 rounded-full ${!nextMonthButtonDisabled && 'focussable click-effect cursor-pointer'}`} onClick={increaseMonth} onKeyDown={e => e.key === 'Enter' && increaseMonth()}>
                 <IconSvg name="nav-arrow-right" className="h-6 w-6" />
               </div>
             </div>
