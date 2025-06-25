@@ -33,3 +33,6 @@
 		- [ ] Innactivate
 		- [ ] API connection
 - [X] Responsive
+- [X] Negative case
+	- [X] Data 404
+	- [X] Page 404
