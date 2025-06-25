@@ -73,3 +73,35 @@ export async function getAll(filter) {
   }
   return res
 }
+export async function getAllHistory(filter) {
+  const raNum = (min: number, max: number) => {
+    min = Math.ceil(min)
+    max = Math.floor(max)
+    return Math.floor(Math.random() * (max - min + 1)) + min
+  }
+  const historyList = () => {
+    const data = []
+    const oneDayMs = 1000 * 60 * 60 * 24
+    let splitVal = filter.date.length === 2 ? [filter.date[0].split('-'), filter.date[1].split('-')] : [dateSent().split('-'), dateSent().split('-')]
+    const diffMs = Math.abs(new Date(splitVal[1].join('-')) - new Date(splitVal[0].join('-')))
+    const dayNumber = Math.floor(diffMs / oneDayMs)
+    for (let i = dayNumber; i >= 0; i--) {
+      for (let j = 6; j <= 22; j++) {
+        if (data.length <= 10) data.push({ date: new Date(new Date().setDate(new Date(new Date(splitVal[1]).getDate() - i))).setHours(j), value: raNum(1000, 250000) })
+      }
+    }
+    return data
+  }
+  const res = {
+    data: historyList(),
+    meta: {
+      from_row: (filter.page * 10) - 9,
+      to_row: filter.page * 10,
+      total_row: 50,
+      lenght_row: 10,
+      current_page: filter.page,
+      total_page: 5
+    }
+  }
+  return res
+}

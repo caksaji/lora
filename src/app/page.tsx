@@ -1,11 +1,11 @@
 'use client'
 
-import { useState, useEffect, forwardRef } from 'react'
+import { useState, useEffect } from 'react'
 import dynamic from 'next/dynamic'
 import { useTheme } from 'next-themes'
 import { useBreakpoint } from '@/hook/useBreakpoint'
 import { dateShownFormat, timeShownFormat, formatNum, formatCurrency, dateSent } from '@/lib/localUtil'
-import { getAll } from '@/lib/api/report'
+import { getAll, getAllHistory } from '@/lib/api/report'
 import InputDateRange from '@/component/partial/InputDateRange'
 import Skeleton from '@/component/partial/Skeleton'
 import IconSvg from '@/component/partial/IconSvg'
@@ -27,10 +27,13 @@ const Chart = dynamic(() => import('react-apexcharts'), { ssr: false })
 
 export default function Report() {
   const [reportData, setReportData] = useState({})
+  const [historyData, setHistoryData] = useState({})
   const [showSkeleton, setShowSkeleton] = useState(true)
+  const [showSkeletonTable, setShowSkeletonTable] = useState(true)
   const [filter, setFilter] = useState({
     date: '',
-    range: [] as [Date, Date] | []
+    range: [] as [Date, Date] | [],
+    page: 1
   })
   const { theme } = useTheme()
   const bp = useBreakpoint()
@@ -115,31 +118,34 @@ export default function Report() {
   ]
 
   useEffect(() => {
-    const nd = new Date()
-    let range = []
-    let runMethod = false
-    if (filter.date?.id !== dateRangeList[dateRangeList.length - 1].id) {
-      if (filter.date?.id === dateRangeList[1].id) {
-        range = [dateSent(), dateSent()]
-      } else if (filter.date?.id === dateRangeList[2].id) {
-        range = [dateSent(new Date(nd.setDate(nd.getDate() - 6))), dateSent()]
-      } else if (filter.date?.id === dateRangeList[3].id) {
-        const month = dateSent().split('-')
-        range = [`${month[0]}-${month[1]}`, `${month[0]}-${month[1]}`]
-      } else if (filter.date?.id === dateRangeList[4].id) {
-        const year = dateSent().split('-')
-        range = [year[0], year[0]]
-      }
-      runMethod = true
-    }
-    if (runMethod) {
-      getData(range)
-    }
-  }, [filter])
+    getDataHistory()
+  }, [filter.range, filter.page])
 
   const changeFilter = (v) => {
     const { field, value } = v
     setFilter(d => ({ ...d, [field]: value }))
+  }
+  const changeDate = (selection) => {
+    changeFilter({ field: 'date', value: selection })
+    const nd = new Date()
+    let range = []
+    let runMethod = false
+    if (selection.id !== dateRangeList[dateRangeList.length - 1].id) {
+      if (selection.id === dateRangeList[1].id) {
+        range = [dateSent(), dateSent()]
+      } else if (selection.id === dateRangeList[2].id) {
+        range = [dateSent(new Date(nd.setDate(nd.getDate() - 6))), dateSent()]
+      } else if (selection.id === dateRangeList[3].id) {
+        const month = dateSent().split('-')
+        range = [`${month[0]}-${month[1]}`, `${month[0]}-${month[1]}`]
+      } else if (selection.id === dateRangeList[4].id) {
+        const year = dateSent().split('-')
+        range = [year[0], year[0]]
+      }
+      changeFilter({ field: 'range', value: range })
+      runMethod = true
+    }
+    if (runMethod) getData(range)
   }
   const changeRange = (selection) => {
     changeFilter({ field: 'range', value: selection })
@@ -149,11 +155,19 @@ export default function Report() {
       dateSent(new Date(new Date(dateArr[1]).setDate(new Date(dateArr[1]).getDate() + 1)))
     ])
   }
-  const getData = (range: number = []) => {
+  const getData = async (range: [Date, Date] | []) => {
+    changeFilter({ field: 'page', value: 1 })
     setShowSkeleton(true)
-    getAll({ date: range }).then((res) => {
+    await getAll({ date: range }).then((res) => {
       setReportData(res)
       setShowSkeleton(false)
+    })
+  }
+  const getDataHistory = async () => {
+    setShowSkeletonTable(true)
+    await getAllHistory({ date: filter.range, page: filter.page }).then((res) => {
+      setHistoryData(res)
+      setShowSkeletonTable(false)
     })
   }
 
@@ -175,7 +189,7 @@ export default function Report() {
               preSelect={true}
               showSkeleton={showSkeleton}
               absoluteOptionPosition={true}
-              onChange={selection => changeFilter({ field: 'date', value: selection })}
+              onChange={selection => changeDate(selection)}
             />
           </div>
           {filter.date?.id === dateRangeList[dateRangeList.length - 1].id &&
@@ -238,34 +252,48 @@ export default function Report() {
           <div className="text-lg font-semibold">
             Transaction History
           </div>
-          <Table
-            showSkeleton={showSkeleton}
-            emptyData={reportData?.history?.length > 0 ? false : true}
-            emptyDataText="Oops, no products sold"
-            minShowTableAt="xs"
-            thead={
-              <>
-                <span className="tcell w-full shrink">At</span>
-                <span className="tcell w-32 text-center">Value</span>
-              </>
-            }
-            tbody={reportData?.history?.map((d, i) => (
-              <div key={i} className="tbody">
-                <span className="tcell w-full shrink">{dateShownFormat(d.date, 'medium')}, {timeShownFormat(d.date)}</span>
-                <span className="tcell w-32 text-right">{formatCurrency(d.value)}</span>
-                {/*<div className="tcell w-28">
-                  <div className="flex w-full space-x-2">
-                    <SpInputRadio v-model="atmosphere.status" type="toggle" :disabled="loadingToggle" :loading="loadingToggle" @change="changeStatus(atmosphere.id)" />
-                    <SpButton color="blue" size="sm" icon-only @click="openModalEdit(atmosphere)">
-                      <template #icon>
-                        <IconSvg name="edit-pencil" className="h-5 w-5" />
-                      </template>
-                    </SpButton>
-                  </div>
-                </div>*/}
-              </div>
-            ))}
-          />
+          {historyData?.meta?.current_page &&
+            <Table
+              showSkeleton={showSkeleton}
+              emptyData={historyData?.data?.length > 0 ? false : true}
+              emptyDataText="Oops, no products sold"
+              minShowTableAt="xs"
+              meta={{
+                fromRow: historyData?.meta?.from_row,
+                toRow: historyData?.meta?.to_row,
+                totalRow: historyData?.meta?.total_row,
+                lenghtRow: historyData?.meta?.lenght_row,
+                currentPage: historyData?.meta?.current_page,
+                totalPage: historyData?.meta?.total_page
+              }}
+              onChangePage={to => {
+                console.log('onChangePage called with', to)
+                changeFilter({ field: 'page', value: to })
+              }}
+              thead={
+                <>
+                  <span className="tcell w-full shrink">At</span>
+                  <span className="tcell w-32 text-center">Value</span>
+                </>
+              }
+              tbody={historyData?.data?.map((d, i) => (
+                <div key={i} className="tbody">
+                  <span className="tcell w-full shrink">{dateShownFormat(d.date, 'medium')}, {timeShownFormat(d.date)}</span>
+                  <span className="tcell w-32 text-right">{formatCurrency(d.value)}</span>
+                  {/*<div className="tcell w-28">
+                    <div className="flex w-full space-x-2">
+                      <SpInputRadio v-model="atmosphere.status" type="toggle" :disabled="loadingToggle" :loading="loadingToggle" @change="changeStatus(atmosphere.id)" />
+                      <SpButton color="blue" size="sm" icon-only @click="openModalEdit(atmosphere)">
+                        <template #icon>
+                          <IconSvg name="edit-pencil" className="h-5 w-5" />
+                        </template>
+                      </SpButton>
+                    </div>
+                  </div>*/}
+                </div>
+              ))}
+            />
+          }
         </div>
       </div>
     </div>

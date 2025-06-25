@@ -1,7 +1,7 @@
 'use client'
 
 import { useBreakpoint } from '@/hook/useBreakpoint'
-import { keydownEnter } from '@/lib/localUtil'
+import { formatNum, keydownEnter } from '@/lib/localUtil'
 import Skeleton from '@/component/partial/Skeleton'
 import ErrorData404 from '@/component/partial/ErrorData404'
 import IconSvg from '@/component/partial/IconSvg'
@@ -47,11 +47,11 @@ export default function Table({
 
   if (!bp.hasMounted) return null
   const changePage = (to: string) => {
-    if (to === 'prev' && !showSkeleton && meta.current_page > 1) {
-      onChangePage?.(meta.current_page - 1)
+    if (to === 'prev' && !showSkeleton && meta.currentPage > 1) {
+      onChangePage?.(meta.currentPage - 1)
     }
-    else if (to === 'next' && !showSkeleton && meta.current_page < meta.last_page) {
-      onChangePage?.(meta.current_page + 1)
+    else if (to === 'next' && !showSkeleton && meta.currentPage < meta.totalPage) {
+      onChangePage?.(meta.currentPage + 1)
     }
   }
 
@@ -111,14 +111,14 @@ export default function Table({
           }
         </div>
       }
-      {(!emptyData && meta?.from && meta?.to && meta?.total && meta?.current_page && meta?.last_page && meta?.last_page > 1) &&
+      {(!emptyData && meta?.fromRow && meta?.toRow && meta?.totalRow && meta?.currentPage && meta?.totalPage && meta?.totalPage > 1) &&
         <div className="items-start justify-between w-full sm:flex">
           <div className="flex items-start justify-center divide-x divide-gray-200 dark:divide-gray-700">
             <div className="content-center h-12 px-4">
-              {/*<SpNumberFormat :value="10" /> baris per halaman*/}
+              Showing {formatNum(10)} rows per page
             </div>
             <div className="content-center h-12 px-4 border-gray-200 dark:border-gray-700">
-              {/*Baris <SpNumberFormat :value="meta.from" /> - <SpNumberFormat :value="meta.to" /> dari <SpNumberFormat :value="meta.total" /> baris*/}
+              Row {formatNum(meta.fromRow)} - {formatNum(meta.toRow)} of total {formatNum(meta.totalRow)} rows
             </div>
           </div>
           <div className="flex items-start justify-center divide-gray-200 dark:divide-gray-700 sm:divide-x">
@@ -128,8 +128,8 @@ export default function Table({
                 `duration-300 outline-none focus:bg-gray-300 dark:focus:bg-gray-700
                 ${showSkeleton ? 'cursor-not-allowed' : 'hover:bg-gray-300 dark:hover:bg-gray-700'}
               `}
-              onClick={changePage('prev')}
-              onKeyDown={keydownEnter(changePage('prev'))}
+              onClick={() => changePage('prev')}
+              onKeyDown={keydownEnter(() => changePage('prev'))}
             >
               <div
                 className={`
@@ -140,7 +140,7 @@ export default function Table({
               </div>
             </div>
             <div className="content-center h-12 px-4">
-              {/*<SpNumberFormat :value="meta.current_page" /> dari <SpNumberFormat :value="meta.last_page" /> halaman*/}
+              Page {formatNum(meta.currentPage)} of {formatNum(meta.totalPage)}
             </div>
             <div
               tabIndex={!showSkeleton ? 0 : -1}
@@ -148,8 +148,8 @@ export default function Table({
                 duration-300 outline-none focus:bg-gray-300 dark:focus:bg-gray-700
                 ${showSkeleton ? 'cursor-not-allowed' : 'hover:bg-gray-300 dark:hover:bg-gray-700'}
               `}
-              onClick={changePage('next')}
-              onKeyDown={keydownEnter(changePage('next'))}
+              onClick={() => changePage('next')}
+              onKeyDown={keydownEnter(() => changePage('next'))}
             >
               <div
                 className={`
