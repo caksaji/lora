@@ -1,4 +1,5 @@
 import { useEffect, useRef } from 'react'
+import { useBreakpoint } from '@/hook/useBreakpoint'
 import IconSvg from '@/component/partial/IconSvg'
 
 export default function Modal({
@@ -29,6 +30,8 @@ export default function Modal({
   footerContent: React.ReactNode
 }) {
   const modalRef = useRef<HTMLDivElement>(null)
+  const bp = useBreakpoint()
+  const screenMaxWidth = bp.smallerThan('md')
 
   useEffect(() => {
     const handleEscKey = (e: KeyboardEvent) => {
@@ -75,7 +78,7 @@ export default function Modal({
   return (
     <div>
       <div className="fixed top-0 bottom-0 right-0 left-0 z-20 flex items-center justify-center bg-black/50 backdrop-filter backdrop-blur-sm" onClick={handleOverlayClick} />
-      <div ref={modalRef} role="dialog" aria-labelledby="modal-title" aria-hidden={!isOpen} className={`flex flex-col fixed bottom-0 left-0 z-20 w-dvw max-h-full py-6 rounded-t-xl bg-gray-100 transform duration-300 dark:bg-gray-800 ${!keepOnPhoneSize && 'md:bottom-auto md:w-full md:border-b md:rounded-lg md:m-auto'} ${pxBody && keepOnPhoneSize && 'px-2'} ${pxBody && !keepOnPhoneSize && 'px-4 md:px-6'} ${size && !keepOnPhoneSize && 'max-width-' + size}`} style={{ maxHeight: 'calc(100vh - 66px)' }}>
+      <div ref={modalRef} role="dialog" aria-labelledby="modal-title" aria-hidden={!isOpen} className={`flex flex-col fixed bottom-0 left-0 z-20 w-dvw max-h-full py-6 rounded-t-xl bg-gray-100 transform duration-300 dark:bg-gray-800 ${!keepOnPhoneSize && 'md:bottom-auto md:top-1/2 md:left-1/2 md:transform md:-translate-y-1/2 md:-translate-x-1/2 md:w-full md:rounded-lg md:m-auto'} ${pxBody && keepOnPhoneSize && 'px-2'} ${pxBody && !keepOnPhoneSize && 'px-4 md:px-6'} ${size && !keepOnPhoneSize && 'md:max-w-[' + (size === 'sm' ? '24rem' : size === 'md' ? '30rem' : size === 'lg' ? '40rem' : size === 'xl' ? '50rem' : size === 'full' ? '70rem' : '0') + ']'}`} style={{ maxHeight: 'calc(100vh - 66px)', maxWidth: size && !keepOnPhoneSize && bp.greaterOrEqual('md') && (size === 'sm' ? '24rem' : size === 'md' ? '30rem' : size === 'lg' ? '40rem' : size === 'xl' ? '50rem' : size === 'full' ? '70rem' : 'unset') }}>
         {(title || x) &&
           <div className={`pb-3 ${!pxBody && keepOnPhoneSize && 'px-2'} ${!pxBody && !keepOnPhoneSize && 'px-4 md:px-6'} ${x && 'flex items-start justify-between w-full'}`}>
             {title &&
@@ -85,7 +88,7 @@ export default function Modal({
             }
             {x &&
               <div className={keepOnPhoneSize || screenMaxWidth && 'absolute -top-16 right-4'}>
-                <div tabIndex={0} aria-label="Close" className={`relative rounded-full outline-0 mt-1.5 ring-gray-300 ring-opacity-90 cursor-pointer click-effect focus:ring ${keepOnPhoneSize || screenMaxWidth && 'p-2 bg-white border-gray-600 dark:border dark:border-gray-700 dark:bg-gray-900'} ${!keepOnPhoneSize && !screenMaxWidth && 'p-1'}`} onClick={onClose} onKeyDown={e => e.key === 'Enter' && onClose}>
+                <div tabIndex={0} aria-label="Close" className={`relative rounded-full outline-0 mt-1.5 ring-gray-300 ring-opacity-90 cursor-pointer click-effect focus:ring ${keepOnPhoneSize || screenMaxWidth && 'p-2 bg-gray-100 dark:bg-gray-800'} ${!keepOnPhoneSize && !screenMaxWidth && 'p-1'}`} onClick={onClose} onKeyDown={e => e.key === 'Enter' && onClose}>
                   <IconSvg name="xmark" class="h-6 w-6" />
                 </div>
               </div>
