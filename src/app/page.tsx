@@ -8,7 +8,6 @@ import { dateShownFormat, timeShownFormat, formatNum, formatCurrency, dateSent }
 import { getAll, getAllHistory } from '@/lib/api/report'
 import InputDateRange from '@/component/partial/InputDateRange'
 import Skeleton from '@/component/partial/Skeleton'
-import IconSvg from '@/component/partial/IconSvg'
 import Select from '@/component/partial/Select'
 import Table from '@/component/partial/Table'
 import ModalDetail, { ModalDetailHandle } from '@/component/functional/trx/ModalDetail'
@@ -262,7 +261,7 @@ export default function Report() {
                 <span className="tcell w-full shrink">{dateShownFormat(d.date, 'medium')}, {timeShownFormat(d.date)}</span>
                 <span className="tcell w-32 text-right">{formatCurrency(d.value)}</span>
                 <div className="tcell w-20">
-                  <button onClick={() => modalRef.current?.open()}>
+                  <button onClick={() => modalRef.current?.open(d)}>
                     Detail
                   </button>
                 </div>

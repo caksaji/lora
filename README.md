@@ -16,6 +16,8 @@
 	- [X] Skeleton
 	- [X] Table
 	- [X] Error data 404
+	- [X] Modal
+	- [ ] Button
 - [ ] Page
 	- [ ] Report
 		- [X] Filter
