@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import dynamic from 'next/dynamic'
 import { useTheme } from 'next-themes'
 import { useBreakpoint } from '@/hook/useBreakpoint'
@@ -11,21 +11,12 @@ import Skeleton from '@/component/partial/Skeleton'
 import IconSvg from '@/component/partial/IconSvg'
 import Select from '@/component/partial/Select'
 import Table from '@/component/partial/Table'
-import {
-  ResponsiveContainer,
-  BarChart,
-  YAxis,
-  XAxis,
-  Tooltip,
-  Legend,
-  Bar,
-  LineChart,
-  Line
-} from 'recharts'
+import ModalDetail, { ModalDetailHandle } from '@/component/functional/trx/ModalDetail'
 
 const Chart = dynamic(() => import('react-apexcharts'), { ssr: false })
 
 export default function Report() {
+  const modalRef = useRef<ModalDetailHandle>(null)
   const [reportData, setReportData] = useState({})
   const [historyData, setHistoryData] = useState({})
   const [showSkeleton, setShowSkeleton] = useState(true)
@@ -263,27 +254,24 @@ export default function Report() {
               <>
                 <span className="tcell w-full shrink">At</span>
                 <span className="tcell w-32 text-center">Value</span>
+                <span className="tcell w-20" />
               </>
             }
             tbody={historyData?.data?.map((d, i) => (
               <div key={i} className="tbody">
                 <span className="tcell w-full shrink">{dateShownFormat(d.date, 'medium')}, {timeShownFormat(d.date)}</span>
                 <span className="tcell w-32 text-right">{formatCurrency(d.value)}</span>
-                {/*<div className="tcell w-28">
-                  <div className="flex w-full space-x-2">
-                    <SpInputRadio v-model="atmosphere.status" type="toggle" :disabled="loadingToggle" :loading="loadingToggle" @change="changeStatus(atmosphere.id)" />
-                    <SpButton color="blue" size="sm" icon-only @click="openModalEdit(atmosphere)">
-                      <template #icon>
-                        <IconSvg name="edit-pencil" className="h-5 w-5" />
-                      </template>
-                    </SpButton>
-                  </div>
-                </div>*/}
+                <div className="tcell w-20">
+                  <button onClick={() => modalRef.current?.open()}>
+                    Detail
+                  </button>
+                </div>
               </div>
             ))}
           />
         </div>
       </div>
+      <ModalDetail ref={modalRef} />
     </div>
   )
 }
