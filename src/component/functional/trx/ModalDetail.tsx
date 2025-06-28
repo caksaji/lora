@@ -2,6 +2,7 @@ import { useState, useEffect, forwardRef, useImperativeHandle } from 'react'
 import { dateShownFormat, timeShownFormat, formatNum, formatCurrency } from '@/lib/localUtil'
 import { get } from '@/lib/api/trx'
 import Modal from '@/component/partial/Modal'
+import Button from '@/component/partial/Button'
 import Skeleton from '@/component/partial/Skeleton'
 import ErrorData404 from '@/component/partial/ErrorData404'
 
@@ -47,12 +48,12 @@ const ModalDetail = forwardRef<ModalDetailHandle>((_, ref) => {
       isOpen={isOpen}
       title="Transaction Detail"
       footerContent={
-        <button onClick={() => {
+        <Button color="white" border={true} className="w-full" onClick={() => {
             setIsOpen(false)
             window.history.back()
         }}>
           Close
-        </button>
+        </Button>
       }
       onClose={() => {
         setIsOpen(false)
@@ -79,6 +80,28 @@ const ModalDetail = forwardRef<ModalDetailHandle>((_, ref) => {
           <>
             {trxData.data.at && `At ${dateShownFormat(trxData.data.at, 'long')}, ${timeShownFormat(trxData.data.at)}`}
             <div className="divide-y divide-gray-400 dark:divide-gray-600">
+              {trxData.data.item.map((d, i) => (
+                <div key={i}>
+                  <div className="flex gap-4 justify-between w-full py-2 px-3 rounded-md duration-300 hover:bg-violet-200 dark:hover:bg-violet-900">
+                    <span>{d.item}</span>
+                    <div className="text-right">
+                      {formatNum(d.qty)} &times; {formatCurrency(d.value)}
+                      <br />{formatCurrency(d.value * d.qty)}
+                    </div>
+                  </div>
+                </div>
+              ))}
+              {trxData.data.item.map((d, i) => (
+                <div key={i}>
+                  <div className="flex gap-4 justify-between w-full py-2 px-3 rounded-md duration-300 hover:bg-violet-200 dark:hover:bg-violet-900">
+                    <span>{d.item}</span>
+                    <div className="text-right">
+                      {formatNum(d.qty)} &times; {formatCurrency(d.value)}
+                      <br />{formatCurrency(d.value * d.qty)}
+                    </div>
+                  </div>
+                </div>
+              ))}
               {trxData.data.item.map((d, i) => (
                 <div key={i}>
                   <div className="flex gap-4 justify-between w-full py-2 px-3 rounded-md duration-300 hover:bg-violet-200 dark:hover:bg-violet-900">

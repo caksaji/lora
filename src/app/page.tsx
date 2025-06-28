@@ -10,6 +10,7 @@ import InputDateRange from '@/component/partial/InputDateRange'
 import Skeleton from '@/component/partial/Skeleton'
 import Select from '@/component/partial/Select'
 import Table from '@/component/partial/Table'
+import Button from '@/component/partial/Button'
 import ModalDetail, { ModalDetailHandle } from '@/component/functional/trx/ModalDetail'
 
 const Chart = dynamic(() => import('react-apexcharts'), { ssr: false })
@@ -261,9 +262,9 @@ export default function Report() {
                 <span className="tcell w-full shrink">{dateShownFormat(d.date, 'medium')}, {timeShownFormat(d.date)}</span>
                 <span className="tcell w-32 text-right">{formatCurrency(d.value)}</span>
                 <div className="tcell w-20">
-                  <button onClick={() => modalRef.current?.open(d)}>
+                  <Button color="violet" size="sm" onClick={() => modalRef.current?.open(d)}>
                     Detail
-                  </button>
+                  </Button>
                 </div>
               </div>
             ))}
