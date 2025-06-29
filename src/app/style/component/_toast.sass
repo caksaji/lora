@@ -1,0 +1,28 @@
+@mixin responsive-toast($breakpoint)
+  @media (min-width: $breakpoint)
+    .toast-container
+      right: calc((100dvw - #{$breakpoint}) / 2 + 0.5rem) !important
+      left: calc((100dvw - #{$breakpoint}) / 2 + 0.5rem) !important
+
+.toast-container
+  $containerX: 0
+  top: 1rem !important
+  bottom: 1rem !important
+  right: calc(0rem + .5rem) !important
+  left: calc(0rem + .5rem) !important
+  >*
+    justify-content: flex-end !important
+    .toast
+      @apply w-full gap-2 py-3 px-4 items-start border border-gray-400 rounded-md shadow-lg bg-gray-100 sm:w-auto sm:!max-w-sm dark:bg-gray-800 dark:border-gray-700
+      max-width: unset
+      color: inherit
+      >*:first-child
+        @apply self-center
+      >[role='status']
+        @apply justify-start !mt-[.25rem] mb-0 mx-0
+        line-height: inherit
+@include responsive-toast(640px)
+@include responsive-toast(768px)
+@include responsive-toast(1024px)
+@include responsive-toast(1280px)
+@include responsive-toast(1536px)

@@ -1,6 +1,7 @@
 import type { Metadata } from 'next'
 import { ThemeProvider } from 'next-themes'
 import { Poppins } from 'next/font/google'
+import { Toaster } from 'react-hot-toast'
 import '@/app/style/global.sass'
 import Navbar from '@/component/partial/Navbar'
 import Footer from '@/component/partial/Footer'
@@ -28,6 +29,14 @@ export default function RootLayout({
     <html lang="en" suppressHydrationWarning>
       <body className="min-h-dvh">
         <ThemeProvider>
+          <Toaster
+            reverseOrder={true}
+            containerClassName="toast-container"
+            toastOptions={{
+              duration: 3000000,
+              className: 'toast'
+            }}
+          />
           <Navbar />
           <div className="container" style={{ minHeight: 'calc(100dvh - (4rem + (1.5rem + 1.5rem + .5rem)))' }}>
             {children}

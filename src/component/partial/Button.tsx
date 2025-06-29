@@ -76,7 +76,7 @@ export default function Modal({
   }
 
   if (showSkeleton) {
-    return <Skeleton className={`${!fab && 'h-9 rounded-md'} ${fab && 'fixed bottom-4 right-4 h-12 w-12 rounded-full md:hidden'} ${skeletonWidth}`} style={{ zIndex: fab ? 1 : 'unset' }} />
+    return <Skeleton className={`${!fab && 'h-9 rounded-md'} ${fab && 'fixed bottom-4 right-4 h-12 w-12 rounded-full md:hidden'} ${skeletonWidth} ${className}`} style={{ zIndex: fab ? 1 : 'unset' }} />
   }
   return (
     <button

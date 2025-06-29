@@ -1,4 +1,5 @@
 import { useState, useEffect, forwardRef, useImperativeHandle } from 'react'
+import toast from 'react-hot-toast'
 import { add } from '@/lib/api/product'
 import Modal from '@/component/partial/Modal'
 import Button from '@/component/partial/Button'
@@ -71,6 +72,7 @@ const ModalDetail = forwardRef<ModalDetailHandle>((_, ref) => {
       changeInput({ field: 'price', value: '' })
       setLoading(false)
       closeModal()
+      toast.success('New product is added')
     })
   }
 

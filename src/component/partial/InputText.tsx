@@ -111,7 +111,7 @@ const InputText = forwardRef(({
     return <Skeleton className={`rounded-md ${skeletonWidth ?? 'w-full'} ${type === 'textarea' ? 'h-24' : 'h-10'} ${className}`} />
   }
   return (
-    <div className={`w-full ${iconAt ? 'relative' : ''} ${className ?? ''}`}>
+    <div className={`w-full ${iconAt ? 'relative' : ''} ${className}`}>
       <div className="flex items-end gap-4">
         {(label && !imitation) && <label htmlFor={`inputText${id}`}>{label}</label>}
         {(maxlength >= 1) && <div className="ml-auto text-gray-400">{value?.length ?? 0}/{maxlength}</div>}
