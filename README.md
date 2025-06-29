@@ -8,7 +8,7 @@
 - [X] Layout
 	- [X] Navbar
 	- [X] Footer
-- [ ] Custom component
+- [X] Custom component
 	- [X] Input text
 	- [X] Select
 	- [X] Icon
@@ -16,10 +16,10 @@
 	- [X] Skeleton
 	- [X] Table
 	- [X] Error data 404
-	- [ ] Modal
-		- [ ] Transition
+	- [X] Modal
+		- [X] Transition
 	- [X] Button
-- [ ] Page
+- [X] Page
 	- [X] Report
 		- [X] Filter
 		- [X] Highlight
@@ -42,6 +42,6 @@
 	- [X] Data 404
 	- [X] Page 404
 - [ ] Test
-	- [ ] On desktop
+	- [X] On desktop
 	- [ ] On android
 	- [ ] On ios

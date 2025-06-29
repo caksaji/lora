@@ -69,10 +69,12 @@ export default function Product() {
                 onInput={search}
                 icon={<IconSvg name="search" className="h-6 w-6" />}
               />
-              <label htmlFor="filterLow" className="flex flex-shrink-0 items-center gap-2">
-                <input id="filterLow" type="checkbox" value={true} className="h-6 accent-violet-400 outline-0 ring-offset-2 ring-violet-700 focus:ring-3 dark:ring-offset-gray-800" onChange={() => changeFilter({ field: 'onlyLow', value: !filter.onlyLow })} />
-                <span>Low stock</span>
-              </label>
+              {!showSkeleton &&
+                <label htmlFor="filterLow" className="flex flex-shrink-0 items-center gap-2">
+                  <input id="filterLow" type="checkbox" value={true} className="h-6 accent-violet-400 outline-0 ring-offset-2 ring-violet-700 focus:ring-3 dark:ring-offset-gray-800" onChange={() => changeFilter({ field: 'onlyLow', value: !filter.onlyLow })} />
+                  <span>Low stock</span>
+                </label>
+              }
             </div>
             <Button color="violet" showSkeleton={showSkeleton} skeletonWidth="w-36" className="ml-auto" onClick={() => modalAdd.current?.open()}>
               Add new product
