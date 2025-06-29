@@ -1,11 +1,11 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useRef, useEffect, useCallback } from 'react'
 import { formatNum, formatCurrency } from '@/lib/localUtil'
 import { getAll } from '@/lib/api/product'
-import IconSvg from '@/component/partial/IconSvg'
-import Select from '@/component/partial/Select'
+import InputText from '@/component/partial/InputText'
 import Table from '@/component/partial/Table'
+import IconSvg from '@/component/partial/IconSvg'
 
 export default function Product() {
   const [allData, setAllData] = useState({})
@@ -15,6 +15,7 @@ export default function Product() {
     onlyLow: false,
     page: 1
   })
+  const searchTimer = useRef<NodeJS.Timeout | null>(null)
 
   useEffect(() => {
     getData()
@@ -24,7 +25,15 @@ export default function Product() {
     const { field, value } = v
     setFilter(d => ({ ...d, [field]: value }))
   }
+  const search = useCallback((val) => {
+    changeFilter({ field: 'name', value: val })
+    if (searchTimer.current) {
+      clearTimeout(searchTimer.current)
+    }
+    searchTimer.current = setTimeout(() => getData(), 1000)
+  }, [filter.search])
   const getData = async () => {
+    console.log('getData')
     setShowSkeleton(true)
     await getAll({ name: filter.name, low: filter.onlyLow, page: filter.page }).then((res) => {
       setAllData(res)
@@ -34,20 +43,20 @@ export default function Product() {
 
   return (
     <div className="grid grid-cols-1 gap-4 md:grid-cols-5">
-      {/*<div className="col-span-full">
+      <div className="col-span-full">
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
           <div className="col-span-1">
-            <Select
-              list={dateRangeList}
-              value={filter.date}
-              preSelect={true}
+            <InputText
+              value={filter.name}
               showSkeleton={showSkeleton}
-              absoluteOptionPosition={true}
-              onChange={selection => changeDate(selection)}
+              placeholder="Find product by name"
+              iconAt="right"
+              onInput={search}
+              icon={<IconSvg name="search" className="h-6 w-6" />}
             />
           </div>
         </div>
-      </div>*/}
+      </div>
       <div className="col-span-full">
         <div className="w-full sm:p-4 sm:rounded-xl sm:space-y-4 sm:bg-gray-100 dark:sm:bg-gray-800">
           <Table

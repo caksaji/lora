@@ -72,7 +72,6 @@ export default function Modal({
   }
 
   const click = () => {
-    console.log('Inner clicked')
     if (!disabled) onClick?.()
   }
 

@@ -17,19 +17,19 @@
 	- [X] Table
 	- [X] Error data 404
 	- [X] Modal
-	- [ ] Button
+	- [X] Button
 - [ ] Page
-	- [ ] Report
+	- [X] Report
 		- [X] Filter
 		- [X] Highlight
 		- [X] Chart
-		- [ ] Trx history
+		- [X] Trx history
 			- [X] List
-			- [ ] Detail
+			- [X] Detail
 		- [X] API connection
 	- [ ] Product
 		- [ ] Filter
-			- [ ] Search by name
+			- [X] Search by name
 			- [ ] Low stock
 		- [X] Table (Name, stock, stock status, min stock, price)
 		- [ ] Add
