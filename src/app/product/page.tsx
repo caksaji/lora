@@ -2,11 +2,12 @@
 
 import { useRef, useState, useEffect, useCallback } from 'react'
 import { formatNum, formatCurrency } from '@/lib/localUtil'
-import { getAll } from '@/lib/api/product'
+import { getAll, editStatus } from '@/lib/api/product'
 import InputText from '@/component/partial/InputText'
 import Button from '@/component/partial/Button'
 import Table from '@/component/partial/Table'
 import IconSvg from '@/component/partial/IconSvg'
+import Toggle from '@/component/partial/Toggle'
 import ModalAdd, { ModalAddHandle } from '@/component/functional/product/ModalAdd'
 import ModalEdit, { ModalEditHandle } from '@/component/functional/product/ModalEdit'
 
@@ -15,6 +16,7 @@ export default function Product() {
   const modalEdit = useRef<ModalEditHandle>(null)
   const [allData, setAllData] = useState({})
   const [showSkeleton, setShowSkeleton] = useState(true)
+  const [loadingToggle, setLoadingToggle] = useState(false)
   const [filter, setFilter] = useState({
     name: '',
     onlyLow: false,
@@ -42,6 +44,13 @@ export default function Product() {
     await getAll({ name: filter.name, low: filter.onlyLow, page: filter.page }).then((res) => {
       setAllData(res)
       setShowSkeleton(false)
+    })
+  }
+  const changeStatus = async (id) => {
+    setLoadingToggle(true)
+    await editStatus(id).then((res) => {
+      getData()
+      setLoadingToggle(false)
     })
   }
 
@@ -90,17 +99,20 @@ export default function Product() {
               card={allData?.data?.map((d, i) => (
                 <div key={i} className="card-col">
                   <div className="card-border">
-                    <div className="title text-lg">
-                      {d.name}
+                    <div className="flex gap-4 justify-between">
+                      <div className="title text-lg">
+                        {d.name}
+                      </div>
+                      <Toggle value={d.active} label={d.active ? 'Active' : 'Inactive'} loading={loadingToggle} onChange={v => changeStatus(i)} />
                     </div>
                     <div className="divide-y divide-gray-400 dark:divide-gray-600">
                       <div className="flex gap-4 justify-between w-full py-2">
                         <span>Stock</span>
                         <div className="flex gap-2 justify-end w-32 text-right">
                           {d.stock <= (d.min_stock / 2)
-                            ? <span className="px-2 rounded-full bg-red-400/30 text-red-400">Very low</span>
+                            ? <span className="h-fit px-2 rounded-full bg-red-400/30 text-red-400">Very low</span>
                             : d.stock <= d.min_stock
-                              ? <span className="px-2 rounded-full bg-yellow-600/30 text-yellow-600">Low</span>
+                              ? <span className="h-fit px-2 rounded-full bg-yellow-600/30 text-yellow-600">Low</span>
                               : ''
                           }
                           <span>{formatNum(d.stock)}</span>
@@ -129,6 +141,7 @@ export default function Product() {
                   <span className="tcell w-32 text-center">Stock</span>
                   <span className="tcell w-24 text-center">Min. Stock</span>
                   <span className="tcell w-24 text-center">Value</span>
+                  <span className="tcell w-28">Value</span>
                 </>
               }
               tbody={allData?.data?.map((d, i) => (
@@ -136,25 +149,23 @@ export default function Product() {
                   <span className="tcell w-full shrink">{d.name}</span>
                   <div className="tcell flex gap-2 justify-end w-32 text-right">
                     {d.stock <= (d.min_stock / 2)
-                      ? <span className="px-2 rounded-full bg-red-400/30 text-red-400">Very low</span>
+                      ? <span className="h-fit px-2 rounded-full bg-red-400/30 text-red-400">Very low</span>
                       : d.stock <= d.min_stock
-                        ? <span className="px-2 rounded-full bg-yellow-600/30 text-yellow-600">Low</span>
+                        ? <span className="h-fit px-2 rounded-full bg-yellow-600/30 text-yellow-600">Low</span>
                         : ''
                     }
                     <span>{formatNum(d.stock)}</span>
                   </div>
                   <span className="tcell w-24 text-right">{formatNum(d.min_stock)}</span>
                   <span className="tcell w-24 text-right">{formatCurrency(d.price)}</span>
-                  {/*<div className="tcell w-28">
+                  <div className="tcell w-28">
                     <div className="flex w-full space-x-2">
-                      <SpInputRadio v-model="atmosphere.status" type="toggle" :disabled="loadingToggle" :loading="loadingToggle" @change="changeStatus(atmosphere.id)" />
-                      <SpButton color="blue" size="sm" icon-only @click="openModalEdit(atmosphere)">
-                        <template #icon>
-                          <IconSvg name="edit-pencil" className="h-5 w-5" />
-                        </template>
-                      </SpButton>
+                      <Toggle value={d.active} loading={loadingToggle} onChange={v => changeStatus(i)} />
+                      <Button color="violet" size="sm" iconOnly={true} icon={<IconSvg name="edit-pencil" className="h-5 w-5" />} onClick={() => modalEdit.current?.open(d)}>
+                        Update
+                      </Button>
                     </div>
-                  </div>*/}
+                  </div>
                 </div>
               ))}
             />

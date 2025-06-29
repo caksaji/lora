@@ -1,5 +1,3 @@
-'use client'
-
 import { useBreakpoint } from '@/hook/useBreakpoint'
 import { formatNum } from '@/lib/localUtil'
 import Skeleton from '@/component/partial/Skeleton'

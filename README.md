@@ -28,15 +28,15 @@
 			- [X] List
 			- [X] Detail
 		- [X] API connection
-	- [ ] Product
+	- [X] Product
 		- [X] Filter
 			- [X] Search by name
 			- [X] Low stock
 		- [X] Table (Name, stock, stock status, min stock, price)
 		- [X] Add
-		- [ ] Update
-		- [ ] Innactivate
-		- [ ] API connection
+		- [X] Update
+		- [X] Innactivate
+		- [X] API connection
 - [X] Responsive
 - [X] Negative case
 	- [X] Data 404

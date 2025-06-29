@@ -12,7 +12,8 @@ export async function getAll(filter) {
         name: productList[raNum(0, 49)],
         stock: raNum(0, 100),
         min_stock: raNum(25, 50),
-        price: raNum(5000, 30000)
+        price: raNum(5000, 30000),
+        active: true
       })
     }
     return data
@@ -34,5 +35,8 @@ export async function add(data) {
   return 'added'
 }
 export async function edit(data) {
+  return 'edited'
+}
+export async function editStatus(data) {
   return 'edited'
 }
