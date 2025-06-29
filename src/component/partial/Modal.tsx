@@ -89,7 +89,7 @@ export default function Modal({
             {x &&
               <div className={keepOnPhoneSize || screenMaxWidth && 'absolute -top-16 right-4'}>
                 <div tabIndex={0} aria-label="Close" className={`relative rounded-full outline-0 mt-1.5 ring-gray-300 ring-opacity-90 cursor-pointer click-effect focus:ring ${keepOnPhoneSize || screenMaxWidth && 'p-2 bg-gray-100 dark:bg-gray-800'} ${!keepOnPhoneSize && !screenMaxWidth && 'p-1'}`} onClick={onClose} onKeyDown={e => e.key === 'Enter' && onClose}>
-                  <IconSvg name="xmark" class="h-6 w-6" />
+                  <IconSvg name="xmark" className="h-6 w-6" />
                 </div>
               </div>
             }
@@ -98,7 +98,7 @@ export default function Modal({
         <div className={`flex-grow overflow-y-auto ${noXSpace && '-mx-6'}`}>
           {children}
         </div>
-        <div className={`pt-3 flex-shrink-0 flex items-center space-x-2 ${footerAlign === 'left' ? 'justify-start' : footerAlign === 'center' ? 'justify-center' :footerAlign === 'right' ? 'justify-end' : 'justify-center'} ${!pxBody && keepOnPhoneSize && 'px-2'} ${!pxBody && !keepOnPhoneSize && 'px-4 md:px-6'}`}>
+        <div className={`pt-4 flex-shrink-0 flex flex-col items-center gap-2 md:flex-row ${footerAlign === 'left' ? 'justify-start' : footerAlign === 'center' ? 'justify-center' :footerAlign === 'right' ? 'justify-end' : 'justify-center'} ${!pxBody && keepOnPhoneSize && 'px-2'} ${!pxBody && !keepOnPhoneSize && 'px-4 md:px-6'}`}>
           {!closable && <div className="absolute top-0 left-0 h-full w-full" style={{ zIndex: '1' }} />}
           {footerContent}
         </div>

@@ -8,7 +8,7 @@
 - [X] Layout
 	- [X] Navbar
 	- [X] Footer
-- [X] Custom component
+- [ ] Custom component
 	- [X] Input text
 	- [X] Select
 	- [X] Icon
@@ -16,7 +16,8 @@
 	- [X] Skeleton
 	- [X] Table
 	- [X] Error data 404
-	- [X] Modal
+	- [ ] Modal
+		- [ ] Transition
 	- [X] Button
 - [ ] Page
 	- [X] Report

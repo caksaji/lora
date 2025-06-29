@@ -30,3 +30,6 @@ export async function getAll(filter) {
   }
   return res
 }
+export async function add(data) {
+  return 'added'
+}

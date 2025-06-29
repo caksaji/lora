@@ -119,8 +119,8 @@ export default function Modal({
     >
       {noStyle
         ? <span>{children}</span>
-        : <div className={`flex items-center justify-center space-x-2 ${fab && 'h-12 w-12'} ${!fab && 'w-full'}`}>
-          {loading && <SpinnerCircle className="w-4 h-4" />}
+        : <div className={`flex items-center justify-center ${fab && 'h-12 w-12'} ${!fab && 'w-full'}`}>
+          {loading && <SpinnerCircle className={`w-4 h-4 ${(icon || !iconOnly) && 'mr-2'}`} />}
           {!loading && icon}
           {!iconOnly && children}
         </div>

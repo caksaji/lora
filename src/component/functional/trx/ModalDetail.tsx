@@ -36,7 +36,6 @@ const ModalDetail = forwardRef<ModalDetailHandle>((_, ref) => {
     const handlePopState = () => {
       if (isOpen) setIsOpen(false)
     }
-
     window.addEventListener('popstate', handlePopState)
     return () => {
       window.removeEventListener('popstate', handlePopState)
@@ -49,8 +48,8 @@ const ModalDetail = forwardRef<ModalDetailHandle>((_, ref) => {
       title="Transaction Detail"
       footerContent={
         <Button color="white" border={true} className="w-full" onClick={() => {
-            setIsOpen(false)
-            window.history.back()
+          setIsOpen(false)
+          window.history.back()
         }}>
           Close
         </Button>

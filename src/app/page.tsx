@@ -16,7 +16,7 @@ import ModalDetail, { ModalDetailHandle } from '@/component/functional/trx/Modal
 const Chart = dynamic(() => import('react-apexcharts'), { ssr: false })
 
 export default function Report() {
-  const modalRef = useRef<ModalDetailHandle>(null)
+  const modalDetail = useRef<ModalDetailHandle>(null)
   const [reportData, setReportData] = useState({})
   const [historyData, setHistoryData] = useState({})
   const [showSkeleton, setShowSkeleton] = useState(true)
@@ -262,7 +262,7 @@ export default function Report() {
                 <span className="tcell w-full shrink">{dateShownFormat(d.date, 'medium')}, {timeShownFormat(d.date)}</span>
                 <span className="tcell w-32 text-right">{formatCurrency(d.value)}</span>
                 <div className="tcell w-20">
-                  <Button color="violet" size="sm" onClick={() => modalRef.current?.open(d)}>
+                  <Button color="violet" size="sm" onClick={() => modalDetail.current?.open(d)}>
                     Detail
                   </Button>
                 </div>
@@ -271,7 +271,7 @@ export default function Report() {
           />
         </div>
       </div>
-      <ModalDetail ref={modalRef} />
+      <ModalDetail ref={modalDetail} />
     </div>
   )
 }

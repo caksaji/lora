@@ -38,7 +38,7 @@ const InputText = forwardRef(({
   hasImitationValue?: boolean,
   label?: string,
   type: 'text' | 'email' | 'password' | 'textarea',
-  inputmode: 'text' | 'email' | 'tel',
+  inputmode: 'text' | 'email' | 'tel' | 'decimal',
   placeholder?: string,
   maxlength?: number,
   error?: string,
