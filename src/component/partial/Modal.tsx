@@ -33,15 +33,15 @@ export default function Modal({
   const bp = useBreakpoint()
   const screenMaxWidth = bp.smallerThan('md')
 
-  useEffect(() => {
-    const handleEscKey = (e: KeyboardEvent) => {
-      if (e.key === 'Escape' && closable) onClose()
-    }
-    document.addEventListener('keydown', handleEscKey)
-    return () => {
-      document.removeEventListener('keydown', handleEscKey)
-    }
-  }, [onClose])
+  // useEffect(() => {
+  //   const handleEscKey = (e: KeyboardEvent) => {
+  //     if (e.key === 'Escape' && closable) onClose()
+  //   }
+  //   document.addEventListener('keydown', handleEscKey)
+  //   return () => {
+  //     document.removeEventListener('keydown', handleEscKey)
+  //   }
+  // }, [onClose])
   useEffect(() => {
     if (!isOpen) return
     const focusableElements = modalRef.current?.querySelectorAll('button, a, input, select, textarea, [tabindex]:not([tabindex="-1"])')
