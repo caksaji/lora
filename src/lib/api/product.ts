@@ -33,3 +33,6 @@ export async function getAll(filter) {
 export async function add(data) {
   return 'added'
 }
+export async function edit(data) {
+  return 'edited'
+}

@@ -8,9 +8,11 @@ import Button from '@/component/partial/Button'
 import Table from '@/component/partial/Table'
 import IconSvg from '@/component/partial/IconSvg'
 import ModalAdd, { ModalAddHandle } from '@/component/functional/product/ModalAdd'
+import ModalEdit, { ModalEditHandle } from '@/component/functional/product/ModalEdit'
 
 export default function Product() {
   const modalAdd = useRef<ModalAddHandle>(null)
+  const modalEdit = useRef<ModalEditHandle>(null)
   const [allData, setAllData] = useState({})
   const [showSkeleton, setShowSkeleton] = useState(true)
   const [filter, setFilter] = useState({
@@ -113,6 +115,11 @@ export default function Product() {
                         <span>{formatCurrency(d.price)}</span>
                       </div>
                     </div>
+                    <div className="space-y-2">
+                      <Button color="violet" className="w-full" onClick={() => modalEdit.current?.open(d)}>
+                        Update
+                      </Button>
+                    </div>
                   </div>
                 </div>
               ))}
@@ -155,6 +162,7 @@ export default function Product() {
         </div>
       </div>
       <ModalAdd ref={modalAdd} />
+      <ModalEdit ref={modalEdit} />
     </div>
   )
 }

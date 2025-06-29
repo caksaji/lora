@@ -33,7 +33,7 @@ export default function RootLayout({
             reverseOrder={true}
             containerClassName="toast-container"
             toastOptions={{
-              duration: 3000000,
+              duration: 3000,
               className: 'toast'
             }}
           />

@@ -33,7 +33,7 @@
 			- [X] Search by name
 			- [X] Low stock
 		- [X] Table (Name, stock, stock status, min stock, price)
-		- [ ] Add
+		- [X] Add
 		- [ ] Update
 		- [ ] Innactivate
 		- [ ] API connection
@@ -41,3 +41,7 @@
 - [X] Negative case
 	- [X] Data 404
 	- [X] Page 404
+- [ ] Test
+	- [ ] On desktop
+	- [ ] On android
+	- [ ] On ios
