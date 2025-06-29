@@ -28,9 +28,9 @@
 			- [X] Detail
 		- [X] API connection
 	- [ ] Product
-		- [ ] Filter
+		- [X] Filter
 			- [X] Search by name
-			- [ ] Low stock
+			- [X] Low stock
 		- [X] Table (Name, stock, stock status, min stock, price)
 		- [ ] Add
 		- [ ] Update

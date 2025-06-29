@@ -33,7 +33,6 @@ export default function Product() {
     searchTimer.current = setTimeout(() => getData(), 1000)
   }, [filter.search])
   const getData = async () => {
-    console.log('getData')
     setShowSkeleton(true)
     await getAll({ name: filter.name, low: filter.onlyLow, page: filter.page }).then((res) => {
       setAllData(res)
@@ -44,17 +43,20 @@ export default function Product() {
   return (
     <div className="grid grid-cols-1 gap-4 md:grid-cols-5">
       <div className="col-span-full">
-        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
-          <div className="col-span-1">
-            <InputText
-              value={filter.name}
-              showSkeleton={showSkeleton}
-              placeholder="Find product by name"
-              iconAt="right"
-              onInput={search}
-              icon={<IconSvg name="search" className="h-6 w-6" />}
-            />
-          </div>
+        <div className="flex items-center gap-4">
+          <InputText
+            value={filter.name}
+            showSkeleton={showSkeleton}
+            placeholder="Find product by name"
+            iconAt="right"
+            className="sm:max-w-xs"
+            onInput={search}
+            icon={<IconSvg name="search" className="h-6 w-6" />}
+          />
+          <label htmlFor="filterLow" className="flex flex-shrink-0 items-center gap-2">
+            <input id="filterLow" type="checkbox" value={true} className="h-6 accent-violet-400 outline-0 ring-offset-2 ring-violet-700 focus:ring-3 dark:ring-offset-gray-800" onChange={() => changeFilter({ field: 'onlyLow', value: !filter.onlyLow })} />
+            <span>Low stock</span>
+          </label>
         </div>
       </div>
       <div className="col-span-full">
