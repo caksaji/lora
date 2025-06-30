@@ -5,7 +5,6 @@ import ErrorData404 from '@/component/partial/ErrorData404'
 import IconSvg from '@/component/partial/IconSvg'
 
 export default function Table({
-  className,
   showSkeleton = false,
   emptyData = false,
   emptyDataText = 'Oops, data is unavailable',
@@ -23,7 +22,6 @@ export default function Table({
   tbody,
   onChangePage
 }: {
-  className?: string,
   showSkeleton?: boolean,
   emptyData?: boolean,
   emptyDataText?: string,

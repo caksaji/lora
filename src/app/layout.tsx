@@ -10,10 +10,6 @@ const fontSans = Poppins({
   subsets: ['latin'],
   weight: ['400', '600']
 })
-const menu = [
-  { name: 'Report', link: '/' },
-  { name: 'Product', link: '/product' }
-]
 
 export const metadata: Metadata = {
   title: 'Lora',

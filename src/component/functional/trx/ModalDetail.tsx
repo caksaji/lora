@@ -126,5 +126,5 @@ const ModalDetail = forwardRef<ModalDetailHandle>((_, ref) => {
     </Modal>
   )
 })
-
+ModalDetail.displayName = 'ModalDetail'
 export default ModalDetail

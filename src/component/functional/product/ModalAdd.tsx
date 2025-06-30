@@ -5,12 +5,12 @@ import Modal from '@/component/partial/Modal'
 import Button from '@/component/partial/Button'
 import InputText from '@/component/partial/InputText'
 
-export type ModalDetailHandle = {
+export type ModalAddHandle = {
   open: () => void
   close: () => void
 }
 
-const ModalDetail = forwardRef<ModalDetailHandle>((_, ref) => {
+const ModalAdd = forwardRef<ModalAddHandle>((_, ref) => {
   const [isOpen, setIsOpen] = useState<boolean>(false)
   const [input, setInput] = useState({
     name: { value: '', error: ''},
@@ -135,5 +135,5 @@ const ModalDetail = forwardRef<ModalDetailHandle>((_, ref) => {
     </Modal>
   )
 })
-
-export default ModalDetail
+ModalAdd.displayName = 'ModalAdd'
+export default ModalAdd
