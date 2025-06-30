@@ -1,12 +1,15 @@
 'use client'
 
+import { useRef } from 'react'
 import { usePathname, useRouter } from 'next/navigation'
 import dynamic from 'next/dynamic'
+import ModalIntro, { ModalIntroHandle } from '@/component/partial/ModalIntro'
 
 export default function Navbar() {
   const router = useRouter()
   const pathName = usePathname()
   const ThemeSwitch = dynamic(() => import('@/component/partial/ThemeSwitch'), { ssr: false })
+  const modalIntro = useRef<ModalIntroHandle>(null)
   const menu = [
     { name: 'Report', link: '/' },
     { name: 'Product', link: '/product' }
@@ -23,11 +26,15 @@ export default function Navbar() {
                   <div className={`h-1 bg-violet-600 transform duration-300 ${pathName === m.link ? 'w-full' : 'w-0'}`} />
                 </div>
               ))}
+              <div tabIndex={0} className="flex flex-col gap-y-1 pt-2 text-gray-400 cursor-pointer duration-300 click-effect focussable hover:text-violet-600" onClick={() => modalIntro.current?.open()} onKeyDown={e => e.key === 'Enter' && modalIntro.current?.open()}>
+                <span>Info</span>
+              </div>
             </div>
             <ThemeSwitch />
           </div>
         </div>
       </div>
+      <ModalIntro ref={modalIntro} />
     </div>
   )
 }
