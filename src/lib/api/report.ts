@@ -28,7 +28,7 @@ export async function getAll(filter) {
         const diffMs = Math.abs(new Date(splitVal[1].join('-')) - new Date(splitVal[0].join('-')))
         const dayNumber = Math.floor(diffMs / oneDayMs)
         for (let i = dayNumber; i >= 0; i--) {
-          data.push({ date: new Date().setDate(new Date(new Date(splitVal[1]).getDate() - i)), value: raNum(1000, 500000) })
+          data.push({ date: new Date().setDate(new Date(new Date(splitVal[1].join('-')).getDate() - i)), value: raNum(1000, 500000) })
         }
       }
     } else {
@@ -87,7 +87,9 @@ export async function getAllHistory(filter) {
     const dayNumber = Math.floor(diffMs / oneDayMs)
     for (let i = dayNumber; i >= 0; i--) {
       for (let j = 6; j <= 22; j++) {
-        if (data.length <= 10) data.push({ date: new Date(new Date().setDate(new Date(new Date(splitVal[1]).getDate() - i))).setHours(j), value: raNum(1000, 250000) })
+        if (data.length <= 10) {
+          data.push({ date: new Date(new Date().setDate(new Date(new Date(splitVal[1].join('-')).getDate() - i))).setHours(j), value: raNum(1000, 250000) })
+        }
       }
     }
     return data

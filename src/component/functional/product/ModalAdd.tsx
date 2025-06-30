@@ -108,6 +108,7 @@ const ModalDetail = forwardRef<ModalDetailHandle>((_, ref) => {
           value={input.stock.value}
           label="Stock"
           placeholder="e.g. 100"
+          inputmode="numeric"
           disabled={loading}
           error={input.stock.error}
           onInput={v => changeInput({ field: 'stock', value: v })}
@@ -116,6 +117,7 @@ const ModalDetail = forwardRef<ModalDetailHandle>((_, ref) => {
           value={input.minStock.value}
           label="Minimum stock (optional)"
           placeholder="e.g. 25"
+          inputmode="numeric"
           disabled={loading}
           error={input.minStock.error}
           onInput={v => changeInput({ field: 'minStock', value: v })}

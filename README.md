@@ -41,7 +41,7 @@
 - [X] Negative case
 	- [X] Data 404
 	- [X] Page 404
-- [ ] Test
+- [X] Test
 	- [X] On desktop
-	- [ ] On android
-	- [ ] On ios
+	- [X] On android
+	- [X] On ios
